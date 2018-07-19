@@ -48,9 +48,9 @@ static int ScreenFlip(void)
 int main(void)
 {
 	// ‰Šúó‘Ô‚Ì‰æ–Êƒ‚[ƒh‚Ìİ’è
-	SetConsoleTitle(TEXT(GAME_TITLE));
-	SetFontSize(32);
-	//SetScreenSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+	//SetConsoleTitle(TEXT(GAME_TITLE));
+	SetFontSize(5);
+	SetScreenSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	SetCursorVisibility(CURSOR_INVISIBLE);
 
 	// •`‰ææ‚ğ— ‰æ–Ê‚Éİ’è

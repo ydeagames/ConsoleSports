@@ -21,8 +21,8 @@
 
 
 // <âÊñ > --------------------------------------------------------------
-#define SCREEN_WIDTH    (640)                  // âÊñ ÇÃïù[pixel]
-#define SCREEN_HEIGHT   (480)                  // âÊñ ÇÃçÇÇ≥[pixel]
+#define SCREEN_WIDTH    (240)                  // âÊñ ÇÃïù[pixel]
+#define SCREEN_HEIGHT   (63)                   // âÊñ ÇÃçÇÇ≥[pixel]
 
 #define SCREEN_TOP      (0)                    // âÊñ ÇÃè„í[
 #define SCREEN_BOTTOM   (SCREEN_HEIGHT)        // âÊñ ÇÃâ∫í[
