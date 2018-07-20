@@ -142,11 +142,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game\BufferedConsole.cpp" />
     <ClCompile Include="Game\Console.cpp" />
     <ClCompile Include="Game\GameMain.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\BufferedConsole.h" />
     <ClInclude Include="Game\Console.h" />
     <ClInclude Include="Game\GameMain.h" />
   </ItemGroup>

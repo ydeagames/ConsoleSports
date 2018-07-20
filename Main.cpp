@@ -9,22 +9,38 @@
 //__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/
 
 // ヘッダファイルの読み込み ================================================
+
 #include <stdio.h>
+#include <time.h>
 #include "Game\Console.h"
-#include <windows.h>
 #include "Game\GameMain.h"
 
 
 
+// グローバル変数定義 ======================================================
 
+int SCREEN_WIDTH;	// 画面の幅[pixel]
+int SCREEN_HEIGHT;	// 画面の高さ[pixel]
+												
+
+												
 // 関数定義 ================================================================
 
 // 1フレーム
 static int ProcessMessage(void)
 {
-	Sleep(17);
+	int next_width = GetScreenWidth();
+	int next_height = GetScreenHeight();
 
-	return TRUE;
+	printf("でかくなった！\n");
+	if (SCREEN_WIDTH != next_width || SCREEN_HEIGHT != next_height)
+	{
+	}
+
+	SCREEN_WIDTH = next_width;
+	SCREEN_HEIGHT = next_height;
+
+	return FALSE;
 }
 
 // キーチェック
@@ -48,13 +64,15 @@ static int ScreenFlip(void)
 int main(void)
 {
 	// 初期状態の画面モードの設定
-	//SetConsoleTitle(TEXT(GAME_TITLE));
-	SetFontSize(5);
-	SetScreenSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+	{
+		int screen_width = GetScreenWidth();
+		int screen_height = GetScreenHeight();
+		int font_old_size = GetFontSize();
+		int font_new_size = 5;
+		SetFontSize(font_new_size);
+		SetScreenSize(screen_width * font_old_size / font_new_size, screen_height * font_old_size / font_new_size);
+	}
 	SetCursorVisibility(CURSOR_INVISIBLE);
-
-	// 描画先を裏画面に設定
-	;
 
 	// ゲームの処理
 	InitializeGame();			// ゲームの初期化処理

@@ -16,21 +16,31 @@
 
 // 定数の定義 ==============================================================
 
+// <基本型> ------------------------------------------------------------
+
+// 真偽値、真偽型定義
+#define TRUE 1
+#define FALSE 0
+typedef int BOOL;
+
+
 // <システム> ----------------------------------------------------------
-#define GAME_TITLE "Sample Game"			   // ゲームタイトル
+
+#define GAME_TITLE "Sample Game"				// ゲームタイトル
 
 
 // <画面> --------------------------------------------------------------
-#define SCREEN_WIDTH    (240)                  // 画面の幅[pixel]
-#define SCREEN_HEIGHT   (63)                   // 画面の高さ[pixel]
 
-#define SCREEN_TOP      (0)                    // 画面の上端
-#define SCREEN_BOTTOM   (SCREEN_HEIGHT)        // 画面の下端
-#define SCREEN_LEFT     (0)                    // 画面の左端
-#define SCREEN_RIGHT    (SCREEN_WIDTH)         // 画面の右端
+extern int SCREEN_WIDTH;						// 画面の幅[pixel]
+extern int SCREEN_HEIGHT;						// 画面の高さ[pixel]
 
-#define SCREEN_CENTER_X (SCREEN_WIDTH  / 2)    // 画面の中央(X座標)
-#define SCREEN_CENTER_Y (SCREEN_HEIGHT / 2)    // 画面の中央(Y座標)
+#define SCREEN_TOP		(0)						// 画面の上端
+#define SCREEN_BOTTOM	(SCREEN_HEIGHT)			// 画面の下端
+#define SCREEN_LEFT		(0)						// 画面の左端
+#define SCREEN_RIGHT	(SCREEN_WIDTH)			// 画面の右端
+
+#define SCREEN_CENTER_X	(SCREEN_WIDTH  / 2)		// 画面の中央(X座標)
+#define SCREEN_CENTER_Y	(SCREEN_HEIGHT / 2)		// 画面の中央(Y座標)
 
 
 
