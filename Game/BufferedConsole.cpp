@@ -27,8 +27,6 @@ static BOOL swap_flag;
 
 void BufferedConsole_Initialize(void)
 {
-	last_attributes = DEFAULT_ATTRIBUTES;
-
 	int i;
 	for (i = 0; i < SCREEN_HEIGHT*SCREEN_WIDTH; i++)
 	{
@@ -37,6 +35,7 @@ void BufferedConsole_Initialize(void)
 	}
 
 	last_coord = { 0, 0 };
+	last_attributes = DEFAULT_ATTRIBUTES;
 	swap_flag = FALSE;
 }
 
@@ -94,7 +93,7 @@ void Print(COORD coord, ATTR attributes, const char* format)
 				size = (SHORT)(enter - format);
 				format = enter;
 			}
-			int width = SCREEN_WIDTH;
+			int width = SCREEN_WIDTH; // デバッグ用
 			*GetPixel(screen, { coord.X, iy }) = { {format, MIN(size, SCREEN_WIDTH - coord.X) }, attributes };
 			if (enter == NULL)
 				return;
