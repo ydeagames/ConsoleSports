@@ -21,7 +21,8 @@
 
 
 // グローバル変数の定義 ====================================================
-
+SHORT g_pos_x;
+SHORT g_pos_y;
 
 
 
@@ -46,7 +47,8 @@ void FinalizeGame(void);    // ゲームの終了処理
 //----------------------------------------------------------------------
 void InitializeGame(void)
 {
-
+	g_pos_x = SCREEN_CENTER_X;
+	g_pos_y = SCREEN_CENTER_Y;
 }
 
 
@@ -60,7 +62,15 @@ void InitializeGame(void)
 //----------------------------------------------------------------------
 void UpdateGame(void)
 {
-
+	int key = GetKeyInput();
+	if (key == KEY_LEFT)
+		g_pos_x += -1;
+	if (key == KEY_RIGHT)
+		g_pos_x += 1;
+	if (key == KEY_UP)
+		g_pos_y += -1;
+	if (key == KEY_DOWN)
+		g_pos_y += 1;
 }
 
 
@@ -75,9 +85,8 @@ void UpdateGame(void)
 //----------------------------------------------------------------------
 void RenderGame(void)
 {
-	static SHORT x = 1;
-	Print({ SCREEN_LEFT - 2, 2 }, DEFAULT_ATTRIBUTES, "abcdefg");
-	Print({ 12, 22 }, DEFAULT_ATTRIBUTES, "a");
+	Print({ g_pos_x, g_pos_y }, DEFAULT_ATTRIBUTES, "abcdefg\nhijklmn\ndkuyrgca\nauycgfbag");
+	Print({ 12, 22 }, DEFAULT_ATTRIBUTES, "↑↓←→キーで操作");
 }
 
 

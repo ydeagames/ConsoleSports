@@ -72,7 +72,7 @@ int main(void)
 	// ゲームの処理
 	InitializeGame();			// ゲームの初期化処理
 
-	while (!ProcessMessage() && !CheckHitKey(KEY_ESC))
+	while (!ProcessMessage()/* && !CheckHitKey(KEY_ESC)*/) // なにかキーを押した際ににCheckHitKey(KEY_ESC)がTRUEになるのはなぜ？
 	{
 		UpdateGame();			// ゲームの更新処理
 		RenderGame();			// ゲームの描画処理
