@@ -31,16 +31,21 @@ typedef int BOOL;
 
 // <画面> --------------------------------------------------------------
 
-extern int SCREEN_WIDTH;						// 画面の幅[pixel]
-extern int SCREEN_HEIGHT;						// 画面の高さ[pixel]
+#define DEFAULT_SCREEN_WIDTH		(120)																	// デフォルトの画面の高さ[em]
+#define DEFAULT_SCREEN_HEIGHT		(30)																	// デフォルトの画面の幅[em]
+#define DEFAULT_SCREEN_FONT_SIZE	(16)																	// デフォルトの文字の大きさ[pt]
 
-#define SCREEN_TOP		(0)						// 画面の上端
-#define SCREEN_BOTTOM	(SCREEN_HEIGHT)			// 画面の下端
-#define SCREEN_LEFT		(0)						// 画面の左端
-#define SCREEN_RIGHT	(SCREEN_WIDTH)			// 画面の右端
+#define SCREEN_FONT_SIZE			(5)																		// 画面の高さ[em]
+#define SCREEN_WIDTH				(DEFAULT_SCREEN_WIDTH * DEFAULT_SCREEN_FONT_SIZE / SCREEN_FONT_SIZE)	// 画面の幅[em]
+#define SCREEN_HEIGHT				(DEFAULT_SCREEN_HEIGHT * DEFAULT_SCREEN_FONT_SIZE / SCREEN_FONT_SIZE)	// 文字の大きさ[pt]
 
-#define SCREEN_CENTER_X	(SCREEN_WIDTH  / 2)		// 画面の中央(X座標)
-#define SCREEN_CENTER_Y	(SCREEN_HEIGHT / 2)		// 画面の中央(Y座標)
+#define SCREEN_TOP					(0)																		// 画面の上端
+#define SCREEN_BOTTOM				(SCREEN_HEIGHT)															// 画面の下端
+#define SCREEN_LEFT					(0)																		// 画面の左端
+#define SCREEN_RIGHT				(SCREEN_WIDTH)															// 画面の右端
+
+#define SCREEN_CENTER_X				(SCREEN_WIDTH  / 2)														// 画面の中央(X座標)
+#define SCREEN_CENTER_Y				(SCREEN_HEIGHT / 2)														// 画面の中央(Y座標)
 
 
 
