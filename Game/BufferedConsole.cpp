@@ -100,7 +100,7 @@ void Print(COORD coord, ATTR attributes, const char* format)
 			if (size - negative > 0 && iy >= SCREEN_TOP)
 			{
 				SHORT i;
-				for (i = 0; i < size; i++)
+				for (i = 0; i < size - negative; i++)
 				{
 					SHORT neg = negative + i;
 					SHORT ix = coord.X + neg;
