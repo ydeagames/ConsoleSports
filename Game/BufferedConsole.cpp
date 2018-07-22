@@ -81,22 +81,30 @@ void Print(COORD coord, ATTR attributes, const char* format)
 	{
 		PPIXEL screen = GetOffScreen();
 
-		SHORT iy;
+		SHORT negative = MAX(0, -coord.X);
+
+		SHORT ix, iy;
+
 		for (iy = coord.Y; iy < SCREEN_HEIGHT; iy++)
 		{
 			const char* enter = strchr(format, '\n');
+
 			SHORT size;
 			if (enter == NULL)
 				size = (SHORT)strlen(format);
 			else
-			{
 				size = (SHORT)(enter - format);
-				format = enter;
+
+			if (size - negative > 0)
+			{
+				ix = coord.X + negative;
+				*GetPixel(screen, { ix, iy }) = { {format + negative, MIN(size - negative, SCREEN_WIDTH - ix) }, attributes };
 			}
-			int width = SCREEN_WIDTH; // デバッグ用
-			*GetPixel(screen, { coord.X, iy }) = { {format, MIN(size, SCREEN_WIDTH - coord.X) }, attributes };
+
 			if (enter == NULL)
 				return;
+			else
+				format = enter+1;
 		}
 	}
 }
