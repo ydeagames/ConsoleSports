@@ -62,14 +62,13 @@ void InitializeGame(void)
 //----------------------------------------------------------------------
 void UpdateGame(void)
 {
-	int key = GetKeyInput();
-	if (key == KEY_LEFT)
+	if (current_key == KEY_LEFT)
 		g_pos_x += -1;
-	if (key == KEY_RIGHT)
+	if (current_key == KEY_RIGHT)
 		g_pos_x += 1;
-	if (key == KEY_UP)
+	if (current_key == KEY_UP)
 		g_pos_y += -1;
-	if (key == KEY_DOWN)
+	if (current_key == KEY_DOWN)
 		g_pos_y += 1;
 }
 
