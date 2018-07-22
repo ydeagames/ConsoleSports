@@ -60,6 +60,11 @@ static PPIXEL GetPixel(const PPIXEL screen, COORD coord)
 	return &screen[coord.Y*SCREEN_WIDTH + coord.X];
 }
 
+PPIXEL GetPixelI(const PPIXEL screen, SHORT x, SHORT y)
+{
+	return GetPixel(screen, { x, y });
+}
+
 void Clear(void)
 {
 	PPIXEL screen = GetOffScreen();
@@ -73,28 +78,26 @@ void Clear(void)
 
 void Print(COORD coord, ATTR attributes, const char* format)
 {
-	PPIXEL screen = GetOffScreen();
-
-	SHORT ix, iy, size;
-	for (iy = coord.Y; iy < SCREEN_HEIGHT; iy++)
+	if (coord.X < SCREEN_RIGHT && coord.Y < SCREEN_BOTTOM)
 	{
-		for (ix = coord.X;; ix++, format++)
-		{
-			if (*format == '\0')
-				return;
-			if (*format == '\n')
-			{
-				format++;
-				break;
-			}
-			if (ix >= SCREEN_WIDTH)
-			{
-				format = strchr(format, '\n') + 1;
-				break;
-			}
+		PPIXEL screen = GetOffScreen();
 
-			size = (SHORT)(strchr(format, '\n') - format);
-			*GetPixel(screen, { ix, iy }) = { {format, MIN(size, SCREEN_RIGHT - ix) }, attributes };
+		SHORT iy;
+		for (iy = coord.Y; iy < SCREEN_HEIGHT; iy++)
+		{
+			const char* enter = strchr(format, '\n');
+			SHORT size;
+			if (enter == NULL)
+				size = (SHORT)strlen(format);
+			else
+			{
+				size = (SHORT)(enter - format);
+				format = enter;
+			}
+			int width = SCREEN_WIDTH;
+			*GetPixel(screen, { coord.X, iy }) = { {format, MIN(size, SCREEN_WIDTH - coord.X) }, attributes };
+			if (enter == NULL)
+				return;
 		}
 	}
 }
@@ -105,12 +108,13 @@ static void FlushPixel(COORD coord, PPIXEL pixel_before, PPIXEL pixel_after)
 		SetBackColor(pixel_after->attributes.background);
 	if (pixel_before->attributes.foreground != pixel_after->attributes.foreground && last_attributes.foreground != pixel_after->attributes.foreground)
 		SetTextColor(pixel_after->attributes.foreground);
-	if (pixel_before->str.size != pixel_after->str.size || strcmp(pixel_before->str.str, pixel_after->str.str) == 0)
+	if (pixel_before->str.size != pixel_after->str.size || strcmp(pixel_before->str.str, pixel_after->str.str) != 0)
 	{
 		if (coord.X != last_coord.X || coord.Y != last_coord.Y)
 			SetCursorPosition(coord.X, coord.Y);
-		printf("%s", pixel_after->str.str);
+		printf("%.*s", pixel_after->str.size, pixel_after->str.str);
 		last_coord = { coord.X + pixel_after->str.size, coord.Y };
+		*pixel_before = *pixel_after;
 	}
 }
 
@@ -126,7 +130,7 @@ void BufferedConsole_Flush(void)
 		{
 			COORD coord = { ix, iy };
 
-			PPIXEL pixel_before = GetPixel(screen_after, coord);
+			PPIXEL pixel_before = GetPixel(screen_before, coord);
 			PPIXEL pixel_after = GetPixel(screen_after, coord);
 
 			FlushPixel(coord, pixel_before, pixel_after);

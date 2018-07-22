@@ -75,7 +75,9 @@ void UpdateGame(void)
 //----------------------------------------------------------------------
 void RenderGame(void)
 {
-	Print({ 2, 2 }, DEFAULT_ATTRIBUTES, "a");
+	static SHORT x = 1;
+	Print({ SCREEN_RIGHT - 2, 2 }, DEFAULT_ATTRIBUTES, "abcdefg");
+	Print({ 12, 22 }, DEFAULT_ATTRIBUTES, "a");
 }
 
 
