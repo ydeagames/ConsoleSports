@@ -14,6 +14,8 @@
 #include <time.h>
 #include "Game\Console.h"
 #include "Game\GameMain.h"
+#include "Game\BufferedConsole.h"
+#include "Game\SpeedTest.h"
 
 
 
@@ -27,8 +29,6 @@
 // 1フレーム
 static int ProcessMessage(void)
 {
-	printf("でかくなった！\n");
-
 	return FALSE;
 }
 
@@ -41,6 +41,8 @@ static int CheckHitKey(int keycode)
 // 裏画面切り替え
 static int ScreenFlip(void)
 {
+	BufferedConsole_Flush();
+
 	return TRUE;
 }
 
@@ -57,6 +59,16 @@ int main(void)
 	SetScreenSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	SetCursorVisibility(CURSOR_INVISIBLE);
 
+	BufferedConsole_Initialize();
+
+	/*
+	// スピードテスト (デバッグ)
+	{
+		TestSpeed();
+		return 0;
+	}
+	/**/
+
 	// ゲームの処理
 	InitializeGame();			// ゲームの初期化処理
 
@@ -66,7 +78,7 @@ int main(void)
 		RenderGame();			// ゲームの描画処理
 
 		ScreenFlip();			// 裏画面の内容を表画面に反映
-		ClearScreen();			// 裏画面の消去
+		Clear();				// 裏画面の消去
 	}
 
 	FinalizeGame();				// ゲームの終了処理

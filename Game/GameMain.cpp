@@ -10,6 +10,7 @@
 
 // ヘッダファイルの読み込み ================================================
 #include "GameMain.h"
+#include "BufferedConsole.h"
 
 
 
@@ -74,7 +75,7 @@ void UpdateGame(void)
 //----------------------------------------------------------------------
 void RenderGame(void)
 {
-
+	Print({ 2, 2 }, DEFAULT_ATTRIBUTES, "a");
 }
 
 

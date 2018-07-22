@@ -145,12 +145,14 @@
     <ClCompile Include="Game\BufferedConsole.cpp" />
     <ClCompile Include="Game\Console.cpp" />
     <ClCompile Include="Game\GameMain.cpp" />
+    <ClCompile Include="Game\SpeedTest.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\BufferedConsole.h" />
     <ClInclude Include="Game\Console.h" />
     <ClInclude Include="Game\GameMain.h" />
+    <ClInclude Include="Game\SpeedTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
