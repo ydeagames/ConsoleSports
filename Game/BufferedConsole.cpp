@@ -25,6 +25,9 @@ static COORD last_coord;
 static ATTR last_attributes;
 //static BOOL swap_flag;
 
+int debug_screen_width = SCREEN_WIDTH;
+int debug_screen_height = SCREEN_HEIGHT;
+
 void BufferedConsole_Initialize(void)
 {
 	int i;
@@ -83,8 +86,7 @@ void Print(COORD coord, ATTR attributes, const char* format)
 
 		SHORT negative = MAX(0, -coord.X);
 
-		SHORT ix, iy;
-
+		SHORT iy;
 		for (iy = coord.Y; iy < SCREEN_HEIGHT; iy++)
 		{
 			const char* enter = strchr(format, '\n');
@@ -97,14 +99,20 @@ void Print(COORD coord, ATTR attributes, const char* format)
 
 			if (size - negative > 0 && iy >= SCREEN_TOP)
 			{
-				ix = coord.X + negative;
-				*GetPixel(screen, { ix, iy }) = { {format + negative, MIN(size - negative, SCREEN_WIDTH - ix) }, attributes };
+				SHORT i;
+				for (i = 0; i < size; i++)
+				{
+					SHORT neg = negative + i;
+					SHORT ix = coord.X + neg;
+					if (ix < SCREEN_WIDTH)
+						*GetPixel(screen, { ix, iy }) = { {format + neg, MIN(size - neg, SCREEN_WIDTH - ix) }, attributes };
+				}
 			}
 
 			if (enter == NULL)
 				return;
 			else
-				format = enter+1;
+				format = enter + 1;
 		}
 	}
 }
@@ -112,16 +120,27 @@ void Print(COORD coord, ATTR attributes, const char* format)
 static void FlushPixel(COORD coord, PPIXEL pixel_before, PPIXEL pixel_after)
 {
 	if (pixel_before->attributes.background != pixel_after->attributes.background && last_attributes.background != pixel_after->attributes.background)
+	{
 		SetBackColor(pixel_after->attributes.background);
+		last_attributes.background = pixel_after->attributes.background;
+	}
 	if (pixel_before->attributes.foreground != pixel_after->attributes.foreground && last_attributes.foreground != pixel_after->attributes.foreground)
+	{
 		SetTextColor(pixel_after->attributes.foreground);
+		last_attributes.foreground = pixel_after->attributes.foreground;
+	}
 	if (pixel_before->str.size != pixel_after->str.size || strcmp(pixel_before->str.str, pixel_after->str.str) != 0)
 	{
 		if (coord.X != last_coord.X || coord.Y != last_coord.Y)
 			SetCursorPosition(coord.X, coord.Y);
 		printf("%.*s", pixel_after->str.size, pixel_after->str.str);
 		last_coord = { coord.X + pixel_after->str.size, coord.Y };
-		*pixel_before = *pixel_after;
+
+		{
+			int i;
+			for (i = 0; i < pixel_after->str.size; i++)
+				pixel_before[i] = pixel_after[i];
+		}
 	}
 }
 
