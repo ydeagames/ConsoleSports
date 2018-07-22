@@ -40,9 +40,9 @@ typedef int		BOOL;							// 真偽値
 #define DEFAULT_SCREEN_HEIGHT		(30)																	// デフォルトの画面の幅[em]
 #define DEFAULT_SCREEN_FONT_SIZE	(16)																	// デフォルトの文字の大きさ[pt]
 
-#define SCREEN_FONT_SIZE			(5)																		// 画面の高さ[em]
+#define SCREEN_FONT_SIZE			(7)																		// 文字の大きさ[pt]
 #define SCREEN_WIDTH				(DEFAULT_SCREEN_WIDTH * DEFAULT_SCREEN_FONT_SIZE / SCREEN_FONT_SIZE)	// 画面の幅[em]
-#define SCREEN_HEIGHT				(DEFAULT_SCREEN_HEIGHT * DEFAULT_SCREEN_FONT_SIZE / SCREEN_FONT_SIZE)	// 文字の大きさ[pt]
+#define SCREEN_HEIGHT				(DEFAULT_SCREEN_HEIGHT * DEFAULT_SCREEN_FONT_SIZE / SCREEN_FONT_SIZE)	// 画面の高さ[em]
 
 #define SCREEN_TOP					(0)																		// 画面の上端
 #define SCREEN_BOTTOM				(SCREEN_HEIGHT - SCREEN_TOP)											// 画面の下端
