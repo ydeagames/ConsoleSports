@@ -23,7 +23,7 @@ static PIXEL buffer2[SCREEN_HEIGHT*SCREEN_WIDTH];
 
 static COORD last_coord;
 static ATTR last_attributes;
-static BOOL swap_flag;
+//static BOOL swap_flag;
 
 void BufferedConsole_Initialize(void)
 {
@@ -36,22 +36,22 @@ void BufferedConsole_Initialize(void)
 
 	last_coord = { 0, 0 };
 	last_attributes = DEFAULT_ATTRIBUTES;
-	swap_flag = FALSE;
+	//swap_flag = FALSE;
 }
 
-static void SwapScreen(void)
-{
-	swap_flag = !swap_flag;
-}
+//static void SwapScreen(void)
+//{
+//	swap_flag = !swap_flag;
+//}
 
 static PPIXEL GetScreen(void)
 {
-	return swap_flag ? buffer1 : buffer2;
+	return /*swap_flag ? */buffer1/* : buffer2*/;
 }
 
 static PPIXEL GetOffScreen(void)
 {
-	return swap_flag ? buffer2 : buffer1;
+	return /*swap_flag ? */buffer2/* : buffer1*/;
 }
 
 static PPIXEL GetPixel(const PPIXEL screen, COORD coord)
@@ -146,5 +146,5 @@ void BufferedConsole_Flush(void)
 		}
 	}
 
-	SwapScreen();
+	//SwapScreen();
 }
