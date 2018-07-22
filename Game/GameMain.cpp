@@ -21,8 +21,10 @@
 
 
 // グローバル変数の定義 ====================================================
-SHORT g_pos_x;
-SHORT g_pos_y;
+float g_vel_x;
+float g_vel_y;
+float g_pos_x;
+float g_pos_y;
 
 
 
@@ -47,8 +49,10 @@ void FinalizeGame(void);    // ゲームの終了処理
 //----------------------------------------------------------------------
 void InitializeGame(void)
 {
-	g_pos_x = SCREEN_CENTER_X;
-	g_pos_y = SCREEN_CENTER_Y;
+	g_vel_x = 0;
+	g_vel_y = 0;
+	g_pos_x = WORLD_CENTER_X;
+	g_pos_y = WORLD_CENTER_Y;
 }
 
 
@@ -63,13 +67,23 @@ void InitializeGame(void)
 void UpdateGame(void)
 {
 	if (current_key == KEY_LEFT)
-		g_pos_x += -1;
+		g_vel_x += -.1f;
 	if (current_key == KEY_RIGHT)
-		g_pos_x += 1;
+		g_vel_x += .1f;
 	if (current_key == KEY_UP)
-		g_pos_y += -1;
+		g_vel_y += -.1f;
 	if (current_key == KEY_DOWN)
-		g_pos_y += 1;
+		g_vel_y += .1f;
+
+	g_pos_x += g_vel_x;
+	g_pos_y += g_vel_y;
+
+	if (g_pos_x < WORLD_LEFT || WORLD_RIGHT <= g_pos_x)
+		g_vel_x *= -1;
+	if (g_pos_y < WORLD_TOP || WORLD_BOTTOM <= g_pos_y)
+		g_vel_y *= -1;
+	g_pos_x = CLAMP(g_pos_x, WORLD_LEFT, WORLD_RIGHT);
+	g_pos_y = CLAMP(g_pos_y, WORLD_TOP, WORLD_BOTTOM);
 }
 
 
@@ -84,7 +98,7 @@ void UpdateGame(void)
 //----------------------------------------------------------------------
 void RenderGame(void)
 {
-	Print({ g_pos_x, g_pos_y }, DEFAULT_ATTRIBUTES, "abcdefg\nhijklmn\ndkuyrgca\nauycgfbag");
+	Print({ (SHORT)(g_pos_x * SCREEN_RESOLUTION_X), (SHORT)(g_pos_y * SCREEN_RESOLUTION_Y) }, DEFAULT_ATTRIBUTES, "■■■\n■■■\n■■■"/*"abcdefg\nhijklmn\ndkuyrgca\nauycgfbag"*/);
 	Print({ 12, 22 }, DEFAULT_ATTRIBUTES, "↑↓←→キーで操作");
 }
 
