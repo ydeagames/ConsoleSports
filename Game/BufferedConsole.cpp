@@ -104,8 +104,9 @@ void Print(COORD coord, ATTR attributes, const char* format)
 				{
 					SHORT neg = negative + i;
 					SHORT ix = coord.X + neg;
-					if (ix < SCREEN_WIDTH)
-						*GetPixel(screen, { ix, iy }) = { {format + neg, MIN(size - neg, SCREEN_WIDTH - ix) }, attributes };
+					SHORT width = (iy >= SCREEN_BOTTOM - 1) ? SCREEN_WIDTH - 1 : SCREEN_WIDTH;
+					if (ix < width)
+						*GetPixel(screen, { ix, iy }) = { {format + neg, MIN(size - neg, width - ix) }, attributes };
 				}
 			}
 
