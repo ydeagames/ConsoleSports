@@ -120,17 +120,24 @@ void Print(COORD coord, ATTR attributes, const char* format)
 
 static void FlushPixel(COORD coord, PPIXEL pixel_before, PPIXEL pixel_after)
 {
+	BOOL modified = FALSE;
 	if (pixel_before->attributes.background != pixel_after->attributes.background && last_attributes.background != pixel_after->attributes.background)
 	{
 		SetBackColor(pixel_after->attributes.background);
 		last_attributes.background = pixel_after->attributes.background;
+		modified = TRUE;
 	}
 	if (pixel_before->attributes.foreground != pixel_after->attributes.foreground && last_attributes.foreground != pixel_after->attributes.foreground)
 	{
 		SetTextColor(pixel_after->attributes.foreground);
 		last_attributes.foreground = pixel_after->attributes.foreground;
+		modified = TRUE;
 	}
 	if (pixel_before->str.size != pixel_after->str.size || strcmp(pixel_before->str.str, pixel_after->str.str) != 0)
+	{
+		modified = TRUE;
+	}
+	if (modified)
 	{
 		if (coord.X != last_coord.X || coord.Y != last_coord.Y)
 			SetCursorPosition(coord.X, coord.Y);

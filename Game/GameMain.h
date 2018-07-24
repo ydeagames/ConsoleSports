@@ -43,7 +43,7 @@ typedef int		BOOL;																						// ê^ãUíl
 
 #define SCREEN_RESOLUTION_X			(7.f / 4.f)																// ècâ°î‰ (â°)
 #define SCREEN_RESOLUTION_Y			(1.f)																	// ècâ°î‰ (èc)
-#define SCREEN_FONT_SIZE			(2)																		// ï∂éöÇÃëÂÇ´Ç≥[pt]
+#define SCREEN_FONT_SIZE			(7)																		// ï∂éöÇÃëÂÇ´Ç≥[pt]
 
 #define SCREEN_WIDTH				(DEFAULT_SCREEN_WIDTH * DEFAULT_SCREEN_FONT_SIZE / SCREEN_FONT_SIZE)	// âÊñ ÇÃïù[em]
 #define SCREEN_HEIGHT				(DEFAULT_SCREEN_HEIGHT * DEFAULT_SCREEN_FONT_SIZE / SCREEN_FONT_SIZE)	// âÊñ ÇÃçÇÇ≥[em]

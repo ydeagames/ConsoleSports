@@ -67,13 +67,16 @@ void InitializeGame(void)
 void UpdateGame(void)
 {
 	if (current_key == KEY_LEFT)
-		g_vel_x += -.1f;
+		g_vel_x += -.01f;
 	if (current_key == KEY_RIGHT)
-		g_vel_x += .1f;
+		g_vel_x += .01f;
 	if (current_key == KEY_UP)
-		g_vel_y += -.1f;
+		g_vel_y += -.01f;
 	if (current_key == KEY_DOWN)
-		g_vel_y += .1f;
+		g_vel_y += .01f;
+
+	g_vel_x *= 0.9998f;
+	g_vel_y *= 0.9998f;
 
 	g_pos_x += g_vel_x;
 	g_pos_y += g_vel_y;
@@ -98,7 +101,7 @@ void UpdateGame(void)
 //----------------------------------------------------------------------
 void RenderGame(void)
 {
-	Print({ (SHORT)(g_pos_x * SCREEN_RESOLUTION_X), (SHORT)(g_pos_y * SCREEN_RESOLUTION_Y) }, DEFAULT_ATTRIBUTES, "Å°Å°Å°\nÅ°Å°Å°\nÅ°Å°Å°"/*"abcdefg\nhijklmn\ndkuyrgca\nauycgfbag"*/);
+	Print({ (SHORT)(g_pos_x * SCREEN_RESOLUTION_X), (SHORT)(g_pos_y * SCREEN_RESOLUTION_Y) }, DEFAULT_ATTRIBUTES, /*"**\n**"*/"abcdefg\nhijklmn\ndkuyrgca\nauycgfbag");
 	Print({ 12, 22 }, DEFAULT_ATTRIBUTES, "Å™Å´Å©Å®ÉLÅ[Ç≈ëÄçÏ");
 }
 
