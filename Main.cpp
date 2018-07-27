@@ -15,14 +15,13 @@
 #include "Game\Console.h"
 #include "Game\GameMain.h"
 #include "Game\BufferedConsole.h"
+#include "Game\InputManager.h"
 #include "Game\SpeedTest.h"
 
 
 
 // グローバル変数定義 ======================================================
 
-int last_key;			// 前回のキー入力
-int current_key;		// 今回のキー入力
 
 
 
@@ -31,16 +30,9 @@ int current_key;		// 今回のキー入力
 // 1フレーム
 static int ProcessMessage(void)
 {
-	last_key = current_key;
-	current_key = GetKeyInput();
+	UpdateInputManager();
 
 	return FALSE;
-}
-
-// キーチェック
-static int CheckHitKey(int keycode)
-{
-	return current_key == keycode;
 }
 
 // 裏画面切り替え
@@ -77,7 +69,7 @@ int main(void)
 	// ゲームの処理
 	InitializeGame();			// ゲームの初期化処理
 
-	while (!ProcessMessage() && !CheckHitKey(KEY_ESC))
+	while (!ProcessMessage() && !IsKeyDown(KEY_ESC))
 	{
 		UpdateGame();			// ゲームの更新処理
 		RenderGame();			// ゲームの描画処理

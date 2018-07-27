@@ -72,10 +72,6 @@ typedef int		BOOL;																						// 真偽値
 
 // グローバル変数の宣言 ====================================================
 
-// TODO InputManager作成
-extern int last_key;
-extern int current_key;
-
 
 
 

@@ -145,6 +145,7 @@
     <ClCompile Include="Game\BufferedConsole.cpp" />
     <ClCompile Include="Game\Console.cpp" />
     <ClCompile Include="Game\GameMain.cpp" />
+    <ClCompile Include="Game\InputManager.cpp" />
     <ClCompile Include="Game\SpeedTest.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
@@ -152,6 +153,7 @@
     <ClInclude Include="Game\BufferedConsole.h" />
     <ClInclude Include="Game\Console.h" />
     <ClInclude Include="Game\GameMain.h" />
+    <ClInclude Include="Game\InputManager.h" />
     <ClInclude Include="Game\SpeedTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

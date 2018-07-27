@@ -11,6 +11,7 @@
 // ヘッダファイルの読み込み ================================================
 #include "GameMain.h"
 #include "BufferedConsole.h"
+#include "InputManager.h"
 
 
 
@@ -66,14 +67,14 @@ void InitializeGame(void)
 //----------------------------------------------------------------------
 void UpdateGame(void)
 {
-	if (current_key == KEY_LEFT)
-		g_vel_x += -.01f;
-	if (current_key == KEY_RIGHT)
-		g_vel_x += .01f;
-	if (current_key == KEY_UP)
-		g_vel_y += -.01f;
-	if (current_key == KEY_DOWN)
-		g_vel_y += .01f;
+	if (IsKeyDown(KEY_LEFT))
+		g_vel_x += -.001f;
+	if (IsKeyDown(KEY_RIGHT))
+		g_vel_x += .001f;
+	if (IsKeyDown(KEY_UP))
+		g_vel_y += -.001f;
+	if (IsKeyDown(KEY_DOWN))
+		g_vel_y += .001f;
 
 	g_vel_x *= 0.9998f;
 	g_vel_y *= 0.9998f;
