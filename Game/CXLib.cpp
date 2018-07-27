@@ -3,14 +3,24 @@
 #include "BufferedConsole.h"
 #include <string.h>
 
+float ConsoleXF(float world_x)
+{
+	return world_x * SCREEN_RESOLUTION_X;
+}
+
+float ConsoleYF(float world_y)
+{
+	return world_y * SCREEN_RESOLUTION_Y;
+}
+
 SHORT ConsoleX(float world_x)
 {
-	return (SHORT)(world_x * SCREEN_RESOLUTION_X);
+	return (SHORT)ConsoleXF(world_x);
 }
 
 SHORT ConsoleY(float world_y)
 {
-	return (SHORT)(world_y * SCREEN_RESOLUTION_Y);
+	return (SHORT)ConsoleYF(world_y);
 }
 
 void DrawString(float x, float y, const char* String, ATTR Color)
@@ -20,10 +30,10 @@ void DrawString(float x, float y, const char* String, ATTR Color)
 
 void DrawBox(float x1, float y1, float x2, float y2, ATTR Color, int FillFlag, const char* Str)
 {
-	int cx1 = ConsoleX(x1);
-	int cy1 = ConsoleY(y1);
-	int cx2 = ConsoleX(x2);
-	int cy2 = ConsoleY(y2);
+	SHORT cx1 = ConsoleX(x1);
+	SHORT cy1 = ConsoleY(y1);
+	SHORT cx2 = ConsoleX(x2);
+	SHORT cy2 = ConsoleY(y2);
 
 	int str_len = MAX(1, strlen(Str));
 
@@ -38,3 +48,25 @@ void DrawBox(float x1, float y1, float x2, float y2, ATTR Color, int FillFlag, c
 	}
 }
 
+void DrawOval(float x, float y, float rx, float ry, ATTR Color, int FillFlag, const char* Str)
+{
+	SHORT cx = ConsoleX(x);
+	SHORT cy = ConsoleY(y);
+	SHORT crx = ConsoleX(rx);
+	SHORT cry = ConsoleY(ry);
+	float crxf = ConsoleXF(rx);
+	float cryf = ConsoleYF(ry);
+
+	int str_len = MAX(1, strlen(Str));
+
+	SHORT ix, iy;
+	for (iy = -cry; iy <= cry; iy++)
+	{
+		for (ix = -crx; ix <= crx; ix += str_len)
+		{
+			float p = (ix*ix) / (crxf*crxf) + (iy*iy) / (cryf*cryf) - 1;
+			if (FillFlag ? p <= .08f : -.25f < p && p < .08f)
+				Print({ cx + ix, cy + iy }, Color, Str);
+		}
+	}
+}

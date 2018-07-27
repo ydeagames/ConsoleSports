@@ -111,7 +111,8 @@ void UpdateGame(void)
 void RenderGame(void)
 {
 	//DrawString(g_pos_x, g_pos_y, /*"**\n**"*/"abcdefg\nhijklmn\ndkuyrgca\nauycgfbag");
-	DrawBox(g_pos_x - 4, g_pos_y - 4, g_pos_x + 4, g_pos_y + 4, CreateATTR(COLOR_BLACK, COLOR_WHITE), TRUE, " ");
+	//DrawBox(g_pos_x - 4, g_pos_y - 4, g_pos_x + 4, g_pos_y + 4, CreateATTR(COLOR_BLACK, COLOR_WHITE), TRUE, " ");
+	DrawOval(g_pos_x, g_pos_y, 16, 6, CreateATTR(COLOR_BLACK, COLOR_WHITE), FALSE);
 	Print({ 12, 22 }, DEFAULT_ATTR, "Å™Å´Å©Å®ÉLÅ[Ç≈ëÄçÏ");
 }
 
