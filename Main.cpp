@@ -22,6 +22,8 @@
 
 // グローバル変数定義 ======================================================
 
+static clock_t last_clock;
+float delta_seconds;
 
 
 
@@ -30,6 +32,9 @@
 // 1フレーム
 static int ProcessMessage(void)
 {
+	clock_t now = clock();
+	delta_seconds = MIN(60, now - last_clock) / 1000.f;
+
 	UpdateInputManager();
 
 	return FALSE;
