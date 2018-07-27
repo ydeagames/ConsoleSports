@@ -10,8 +10,8 @@
 
 // ヘッダファイルの読み込み ================================================
 #include "GameMain.h"
-#include "BufferedConsole.h"
 #include "InputManager.h"
+#include "CXLib.h"
 
 
 
@@ -110,8 +110,9 @@ void UpdateGame(void)
 //----------------------------------------------------------------------
 void RenderGame(void)
 {
-	Print({ (SHORT)(g_pos_x * SCREEN_RESOLUTION_X), (SHORT)(g_pos_y * SCREEN_RESOLUTION_Y) }, DEFAULT_ATTRIBUTES, /*"**\n**"*/"abcdefg\nhijklmn\ndkuyrgca\nauycgfbag");
-	Print({ 12, 22 }, DEFAULT_ATTRIBUTES, "↑↓←→キーで操作");
+	//DrawString(g_pos_x, g_pos_y, /*"**\n**"*/"abcdefg\nhijklmn\ndkuyrgca\nauycgfbag");
+	DrawBox(g_pos_x - 4, g_pos_y - 4, g_pos_x + 4, g_pos_y + 4, CreateATTR(COLOR_BLACK, COLOR_WHITE), TRUE, " ");
+	Print({ 12, 22 }, DEFAULT_ATTR, "↑↓←→キーで操作");
 }
 
 

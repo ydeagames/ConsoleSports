@@ -14,9 +14,12 @@ typedef struct {
 	ATTR attributes;
 } PIXEL, *PPIXEL;
 
-const ATTR DEFAULT_ATTRIBUTES = { COLOR_WHITE, COLOR_BLACK };
+static STR CreateSTR(const char* str);
 
-static const PIXEL default_pixel = { { " ", 1 },{ COLOR_WHITE, COLOR_BLACK } };
+const ATTR DEFAULT_ATTR = CreateATTR(COLOR_WHITE, COLOR_BLACK);
+const STR DEFAULT_STR = CreateSTR(" ");
+
+static const PIXEL default_pixel = { CreateSTR(" "), CreateATTR(COLOR_WHITE, COLOR_BLACK) };
 
 static PIXEL buffer1[SCREEN_HEIGHT*SCREEN_WIDTH];
 static PIXEL buffer2[SCREEN_HEIGHT*SCREEN_WIDTH];
@@ -28,6 +31,16 @@ static ATTR last_attributes;
 int debug_screen_width = SCREEN_WIDTH;
 int debug_screen_height = SCREEN_HEIGHT;
 
+ATTR CreateATTR(ConsoleColor foreground, ConsoleColor background)
+{
+	return{ foreground, background };
+}
+
+static STR CreateSTR(const char* str)
+{
+	return{ str, (SHORT)strlen(str) };
+}
+
 void BufferedConsole_Initialize(void)
 {
 	int i;
@@ -38,7 +51,7 @@ void BufferedConsole_Initialize(void)
 	}
 
 	last_coord = { 0, 0 };
-	last_attributes = DEFAULT_ATTRIBUTES;
+	last_attributes = DEFAULT_ATTR;
 	//swap_flag = FALSE;
 }
 
@@ -121,16 +134,22 @@ void Print(COORD coord, ATTR attributes, const char* format)
 static void FlushPixel(COORD coord, PPIXEL pixel_before, PPIXEL pixel_after)
 {
 	BOOL modified = FALSE;
-	if (pixel_before->attributes.background != pixel_after->attributes.background && last_attributes.background != pixel_after->attributes.background)
+	if (pixel_before->attributes.background != pixel_after->attributes.background)
 	{
-		SetBackColor(pixel_after->attributes.background);
-		last_attributes.background = pixel_after->attributes.background;
+		if (last_attributes.background != pixel_after->attributes.background)
+		{
+			SetBackColor(pixel_after->attributes.background);
+			last_attributes.background = pixel_after->attributes.background;
+		}
 		modified = TRUE;
 	}
-	if (pixel_before->attributes.foreground != pixel_after->attributes.foreground && last_attributes.foreground != pixel_after->attributes.foreground)
+	if (pixel_before->attributes.foreground != pixel_after->attributes.foreground)
 	{
-		SetTextColor(pixel_after->attributes.foreground);
-		last_attributes.foreground = pixel_after->attributes.foreground;
+		if (last_attributes.foreground != pixel_after->attributes.foreground)
+		{
+			SetTextColor(pixel_after->attributes.foreground);
+			last_attributes.foreground = pixel_after->attributes.foreground;
+		}
 		modified = TRUE;
 	}
 	if (pixel_before->str.size != pixel_after->str.size || strcmp(pixel_before->str.str, pixel_after->str.str) != 0)

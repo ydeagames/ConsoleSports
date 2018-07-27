@@ -13,7 +13,9 @@ typedef struct {
 	ConsoleColor background;
 } ATTR;
 
-extern const ATTR DEFAULT_ATTRIBUTES;
+extern const ATTR DEFAULT_ATTR;
+
+ATTR CreateATTR(ConsoleColor foreground, ConsoleColor background);
 
 void BufferedConsole_Initialize(void);
 
