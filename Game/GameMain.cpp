@@ -22,6 +22,8 @@
 
 
 // グローバル変数の定義 ====================================================
+float g_acc_x;
+float g_acc_y;
 float g_vel_x;
 float g_vel_y;
 float g_pos_x;
@@ -68,13 +70,19 @@ void InitializeGame(void)
 void UpdateGame(void)
 {
 	if (IsKeyDown(KEY_LEFT))
-		g_vel_x += -.001f * delta_seconds;
+		g_acc_x = -1;
 	if (IsKeyDown(KEY_RIGHT))
-		g_vel_x += .001f * delta_seconds;
+		g_acc_x = 1;
 	if (IsKeyDown(KEY_UP))
-		g_vel_y += -.001f * delta_seconds;
+		g_acc_y = -1;
 	if (IsKeyDown(KEY_DOWN))
-		g_vel_y += .001f * delta_seconds;
+		g_acc_y = 1;
+
+	g_acc_x *= .001f * delta_seconds;
+	g_acc_y *= .001f * delta_seconds;
+
+	g_vel_x += g_acc_x;
+	g_vel_y += g_acc_y;
 
 	g_vel_x *= 0.9998f;
 	g_vel_y *= 0.9998f;
