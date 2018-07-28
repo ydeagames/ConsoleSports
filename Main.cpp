@@ -12,6 +12,7 @@
 
 #include <stdio.h>
 #include <time.h>
+#include "Game\Game.h"
 #include "Game\Console.h"
 #include "Game\GameMain.h"
 #include "Game\BufferedConsole.h"

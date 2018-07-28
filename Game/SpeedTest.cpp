@@ -1,8 +1,8 @@
 #include "SpeedTest.h"
+#include "Game.h"
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-#include "GameMain.h"
 #include "Console.h"
 
 // スピードテスト

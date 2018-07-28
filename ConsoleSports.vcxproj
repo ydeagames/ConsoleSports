@@ -145,18 +145,37 @@
     <ClCompile Include="Game\BufferedConsole.cpp" />
     <ClCompile Include="Game\Console.cpp" />
     <ClCompile Include="Game\CXLib.cpp" />
+    <ClCompile Include="Game\GameController.cpp" />
+    <ClCompile Include="Game\GameControllers.cpp" />
     <ClCompile Include="Game\GameMain.cpp" />
+    <ClCompile Include="Game\GameObject.cpp" />
+    <ClCompile Include="Game\GameObjects.cpp" />
+    <ClCompile Include="Game\GameScene.cpp" />
+    <ClCompile Include="Game\GameScore.cpp" />
+    <ClCompile Include="Game\GameTimer.cpp" />
+    <ClCompile Include="Game\GameUtils.cpp" />
     <ClCompile Include="Game\InputManager.cpp" />
     <ClCompile Include="Game\SpeedTest.cpp" />
+    <ClCompile Include="Game\Vec2.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\BufferedConsole.h" />
     <ClInclude Include="Game\Console.h" />
     <ClInclude Include="Game\CXLib.h" />
+    <ClInclude Include="Game\GameController.h" />
+    <ClInclude Include="Game\GameControllers.h" />
     <ClInclude Include="Game\GameMain.h" />
+    <ClInclude Include="Game\GameObject.h" />
+    <ClInclude Include="Game\GameObjects.h" />
+    <ClInclude Include="Game\GameScene.h" />
+    <ClInclude Include="Game\GameScore.h" />
+    <ClInclude Include="Game\GameTimer.h" />
+    <ClInclude Include="Game\GameUtils.h" />
     <ClInclude Include="Game\InputManager.h" />
     <ClInclude Include="Game\SpeedTest.h" />
+    <ClInclude Include="Game\Vec2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

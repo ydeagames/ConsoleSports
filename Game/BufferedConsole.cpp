@@ -1,7 +1,7 @@
 #include "BufferedConsole.h"
+#include "Game.h"
 #include <stdio.h>
 #include <string.h>
-#include "GameMain.h"
 #include "Console.h"
 
 typedef struct {
