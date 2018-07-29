@@ -87,7 +87,7 @@ float GetDrawStringWidthToHandle(const char* String, const CXFont* FontHandle)
 	{
 	default:
 	case CXFONT_DEFAULT:
-		return strlen(String);
+		return WorldX((SHORT)strlen(String));
 		break;
 	case CXFONT_PONG:
 		float size = 7 / FontHandle->size;
@@ -121,6 +121,7 @@ float GetDrawStringWidthToHandle(const char* String, const CXFont* FontHandle)
 				font_x += sprite->w + FONT_SPAN_WIDTH;
 			}
 		}
+		font_w = GetMaxF(font_w, font_x);
 		return font_w;
 		break;
 	}

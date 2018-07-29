@@ -91,7 +91,7 @@ void InitializeGame(void)
 	//g_controllers.paddle2 = GameController_Bot_Create(&g_scene.paddle2, &g_scene, &g_scene.paddle1);
 
 	// フォント
-	g_font_pong = CreateFontToHandle(CXFONT_PONG, 14);
+	g_font_pong = CreateFontToHandle(CXFONT_PONG, 10);
 
 	// 得点
 	g_scene.score = GameScore_Create();
@@ -295,7 +295,11 @@ void RenderGameSceneDemo(void)
 	GameObject_Render(&g_scene.ball);
 	// メニュー描画
 	{
-
+		float width = GetDrawStringWidthToHandle("Pong Game", &g_font_pong);
+		DrawStringToHandle(GameObject_GetX(&g_scene.field, CENTER_X) - width / 2 - 10, GameObject_GetY(&g_scene.field, CENTER_Y), "Pong Game", ATTR_WHITE, &g_font_pong);
+		DrawString(GameObject_GetX(&g_scene.field, CENTER_X) - 10, GameObject_GetY(&g_scene.field, CENTER_Y) + 18, "スペースキーを押してゲームを始めよう！", CreateATTR(COLOR_YELLOW, COLOR_BLACK));
+		DrawString(GameObject_GetX(&g_scene.field, CENTER_X) - 11, GameObject_GetY(&g_scene.field, CENTER_Y) + 20, "↑↓キーで右パドルを操作してCPUを倒そう！", CreateATTR(COLOR_MAGENTA, COLOR_BLACK));
+		DrawString(GameObject_GetX(&g_scene.field, CENTER_X) - 12, GameObject_GetY(&g_scene.field, CENTER_Y) + 22, "ゲームが早く終わるように5点マッチにしました！", CreateATTR(COLOR_GREEN, COLOR_BLACK));
 	}
 	// スコア描画
 	GameScore_Render(&g_scene.score, &g_scene.field, g_font_pong);

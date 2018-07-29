@@ -28,3 +28,5 @@ void DrawOval(float x, float y, float rx, float ry, ATTR Color, int FillFlag, co
 void DrawCircle(float x, float y, float r, ATTR Color, int FillFlag, const char* Str = " ");
 
 void DrawLine(float x1, float y1, float x2, float y2, ATTR Color, const char* Str = " ");
+
+void DrawDashedLine(float x1, float y1, float x2, float y2, ATTR color, float length, const char* Str = " ");

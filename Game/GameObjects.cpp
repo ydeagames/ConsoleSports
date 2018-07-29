@@ -110,3 +110,12 @@ float GameObject_Paddle_GetBallVelY(GameObject* paddle, GameObject* ball)
 
 	return ((((ball->pos.y - range_top) / range_height) * 2 - 1)*BALL_VEL_Y);
 }
+
+// <<フィールドオブジェクト>> ------------------------------------------
+
+// <フィールド描画>
+void GameObject_Field_Render(const GameObject* field)
+{
+	// コート表示
+	DrawDashedLine(GameObject_GetX(field, CENTER_X), GameObject_GetY(field, TOP), GameObject_GetX(field, CENTER_X), GameObject_GetY(field, BOTTOM), ATTR_WHITE, 2);
+}

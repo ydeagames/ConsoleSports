@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "BufferedConsole.h"
 #include <string.h>
+#include <math.h>
 #include "GameUtils.h"
 
 const ATTR ATTR_WHITE = CreateATTR(COLOR_BLACK, COLOR_WHITE);
@@ -132,5 +133,34 @@ void DrawLine(float x1, float y1, float x2, float y2, ATTR Color, const char* St
 				error += deltax;
 			}
 		}
+	}
+}
+
+// îjê¸Çï`âÊ
+void DrawDashedLine(float x1, float y1, float x2, float y2, ATTR color, float length, const char* Str)
+{
+	float vx = x2 - x1;
+	float vy = y2 - y1;
+
+	float angle = atan2f(vy, vx);
+	float dx = length*cosf(angle);
+	float dy = length*sinf(angle);
+
+	int count = (int)(sqrtf(vx * vx + vy * vy) / length);
+
+	float x = x1;
+	float y = y1;
+	
+	int i;
+	for (i = 0; i < count; i += 2)
+	{
+		DrawLine(x, y, (x + dx), (y + dy), color, Str);
+		x += dx * 2;
+		y += dy * 2;
+	}
+
+	if (count % 2 == 0)
+	{
+		DrawLine(x, y, x2, y2, color, Str);
 	}
 }

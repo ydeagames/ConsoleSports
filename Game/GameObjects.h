@@ -53,3 +53,8 @@ void GameObject_Paddle_SetPosYDefault(GameObject* obj, GameObject* field);
 
 // <パドルオブジェクトボール衝突処理>
 BOOL GameObject_Paddle_CollisionBall(GameObject* paddle, GameObject* ball);
+
+// <<フィールドオブジェクト>> ------------------------------------------
+
+// <フィールド描画>
+void GameObject_Field_Render(const GameObject* field);
