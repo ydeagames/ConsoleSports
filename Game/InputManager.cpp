@@ -2,6 +2,10 @@
 #include "Console.h"
 #include <time.h>
 
+// 定数の定義 ==============================================================
+
+#define KEY_DURATION 475
+
 // グローバル変数の定義 ====================================================
 
 static int g_input_state;
@@ -25,7 +29,7 @@ void UpdateInputManager(void)
 	}
 	else
 	{
-		if (clock() - g_pending_last < 300)
+		if (clock() - g_pending_last < KEY_DURATION)
 			g_input_state = g_pending_key;
 	}
 }

@@ -176,14 +176,14 @@ void GameController_Bot_Update(GameController* ctrl)
 void GameController_Bot_UpdateControl(GameController* ctrl)
 {
 	// Botが動き始めるしきい値
-	float padding = 260 * BALL_VEL_X_MIN / PADDLE_VEL;
+	float padding = 2015 * BALL_VEL_X_MIN / PADDLE_VEL;
 
 	int k = (ctrl->object->pos.x < ctrl->enemy->pos.x) ? 1 : -1;
 
 	ctrl->object->vel.y = 0.f;
 
 	// 自分向きかつしきい値より近かったら動く
-	if (k * (ctrl->scene->ball.vel.x) < 0 && abs(ctrl->scene->ball.pos.x - ctrl->object->pos.x) < padding)
+	if (k * (ctrl->scene->ball.vel.x) < 0/* && abs(ctrl->scene->ball.pos.x - ctrl->object->pos.x) < padding*/)
 	{
 		// Botがパドルを操作
 		float pos_y = ctrl->target_pos.y;
@@ -195,9 +195,9 @@ void GameController_Bot_UpdateControl(GameController* ctrl)
 		// Botが移動できる幅を制限
 		//target1_pos_y = ClampF(target1_pos_y, SCREEN_TOP + 50, SCREEN_BOTTOM - 50);
 
-		if (ctrl->object->pos.y - pos_y > 1.2f * PADDLE_VEL)
+		if (ctrl->object->pos.y - pos_y > .02f * PADDLE_VEL)
 			ctrl->object->vel.y += -PADDLE_VEL;
-		else if (ctrl->object->pos.y - pos_y < -1.2f * PADDLE_VEL)
+		else if (ctrl->object->pos.y - pos_y < -.02f * PADDLE_VEL)
 			ctrl->object->vel.y += PADDLE_VEL;
 	}
 }

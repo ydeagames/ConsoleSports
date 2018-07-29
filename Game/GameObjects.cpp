@@ -6,11 +6,11 @@
 // 定数の定義 ==============================================================
 
 // <ボール>
-#define BALL_SIZE 8
+#define BALL_SIZE 1
 
 // <パドル>
-#define PADDLE_WIDTH  8
-#define PADDLE_HEIGHT 28
+#define PADDLE_WIDTH  1
+#define PADDLE_HEIGHT 4
 
 // 関数の宣言 ==============================================================
 
@@ -62,7 +62,7 @@ GameObject GameObject_Paddle_Create(void)
 // <パドルオブジェクト座標Yデフォルト>
 void GameObject_Paddle_SetPosYDefault(GameObject* obj, GameObject* field)
 {
-	obj->pos.y = GameObject_OffsetY(obj, TOP, GameObject_GetY(field, BOTTOM, -16), 0);
+	obj->pos.y = GameObject_OffsetY(obj, TOP, GameObject_GetY(field, BOTTOM, -4), 0);
 }
 
 // <パドルオブジェクトボール衝突処理>

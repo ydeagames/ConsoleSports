@@ -79,13 +79,13 @@ void InitializeGame(void)
 
 	// パドル1
 	g_scene.paddle1 = GameObject_Paddle_Create();
-	g_scene.paddle1.pos.x = GameObject_OffsetX(&g_scene.paddle1, LEFT, GameObject_GetX(&g_scene.field, LEFT), -64);
+	g_scene.paddle1.pos.x = GameObject_OffsetX(&g_scene.paddle1, LEFT, GameObject_GetX(&g_scene.field, LEFT), -12);
 	GameObject_Paddle_SetPosYDefault(&g_scene.paddle1, &g_scene.field);
 	g_controllers.paddle1 = GameController_Bot_Create(&g_scene.paddle1, &g_scene, &g_scene.paddle2);
 
 	// パドル2
 	g_scene.paddle2 = GameObject_Paddle_Create();
-	g_scene.paddle2.pos.x = GameObject_OffsetX(&g_scene.paddle2, RIGHT, GameObject_GetX(&g_scene.field, RIGHT), -64);
+	g_scene.paddle2.pos.x = GameObject_OffsetX(&g_scene.paddle2, RIGHT, GameObject_GetX(&g_scene.field, RIGHT), -12);
 	GameObject_Paddle_SetPosYDefault(&g_scene.paddle2, &g_scene.field);
 	g_controllers.paddle2 = GameController_Player_Create(&g_scene.paddle2, &g_scene, &g_scene.paddle1, KEY_UP, KEY_DOWN);
 	//g_controllers.paddle2 = GameController_Bot_Create(&g_scene.paddle2, &g_scene, &g_scene.paddle1);
