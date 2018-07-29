@@ -11,13 +11,6 @@
 
 // 変数の定義 ==============================================================
 
-// <<ティック>> --------------------------------------------------------
-
-// <最終時刻>
-static int g_lastcount = -1;
-// <デルタミリ秒>
-static int g_deltamilliseconds = 0;
-
 // 関数の宣言 ==============================================================
 
 static BOOL GameObject_IsHitOvalPoint(GameObject* oval, Vec2* p);
@@ -51,8 +44,8 @@ BOOL GameObject_IsAlive(const GameObject* obj)
 // <オブジェクト座標更新>
 void GameObject_UpdatePosition(GameObject* obj)
 {
-	obj->pos.x += obj->vel.x * (g_deltamilliseconds / 17.f);
-	obj->pos.y += obj->vel.y * (g_deltamilliseconds / 17.f);
+	obj->pos.x += obj->vel.x * (delta_seconds / 17.f);
+	obj->pos.y += obj->vel.y * (delta_seconds / 17.f);
 }
 
 // <オブジェクトXオフセット>
@@ -251,7 +244,7 @@ void GameObject_Render(const GameObject* obj, const Vec2* translate)
 // <フィールドオブジェクト作成>
 GameObject GameObject_Field_Create(void)
 {
-	return GameObject_Create(Vec2_Create(SCREEN_CENTER_X, SCREEN_CENTER_Y), Vec2_Create(), Vec2_Create(SCREEN_WIDTH, SCREEN_HEIGHT));
+	return GameObject_Create(Vec2_Create(WORLD_CENTER_X, WORLD_CENTER_Y), Vec2_Create(), Vec2_Create(WORLD_WIDTH, WORLD_HEIGHT));
 }
 
 // <フィールド上下衝突処理>
