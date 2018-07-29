@@ -12,6 +12,7 @@
 #include "GameMain.h"
 #include "InputManager.h"
 #include "CXLib.h"
+#include "CXFont.h"
 
 
 
@@ -110,11 +111,13 @@ void UpdateGame(void)
 //----------------------------------------------------------------------
 void RenderGame(void)
 {
+	CXFont font = { CXFONT_PONG, 6 };
 	//DrawString(g_pos_x, g_pos_y, /*"**\n**"*/"abcdefg\nhijklmn\ndkuyrgca\nauycgfbag");
 	//DrawBox(g_pos_x - 4, g_pos_y - 4, g_pos_x + 4, g_pos_y + 4, CreateATTR(COLOR_BLACK, COLOR_WHITE), TRUE, " ");
 	DrawLine(20, 20, g_pos_x, g_pos_y, CreateATTR(COLOR_BLACK, COLOR_WHITE), " ");
 	//DrawOval(g_pos_x, g_pos_y, 16, 6, CreateATTR(COLOR_BLACK, COLOR_WHITE), FALSE);
 	Print({ 12, 22 }, DEFAULT_ATTR, "Å™Å´Å©Å®ÉLÅ[Ç≈ëÄçÏ");
+	DrawStringToHandle(22, 22, "1234567890\nPong Game", CreateATTR(COLOR_BLACK, COLOR_WHITE), &font);
 }
 
 

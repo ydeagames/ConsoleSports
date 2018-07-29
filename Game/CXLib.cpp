@@ -4,31 +4,53 @@
 #include <string.h>
 #include "GameUtils.h"
 
-float ConsoleXF(float world_x)
+float ConsoleXF(float world_x, float size)
 {
-	return world_x * SCREEN_RESOLUTION_X;
+	return world_x * (SCREEN_RESOLUTION_X * size);
 }
 
-float ConsoleYF(float world_y)
+float ConsoleYF(float world_y, float size)
 {
-	return world_y * SCREEN_RESOLUTION_Y;
+	return world_y * (SCREEN_RESOLUTION_Y * size);
 }
 
-SHORT ConsoleX(float world_x)
+SHORT ConsoleX(float world_x, float size)
 {
-	return (SHORT)ConsoleXF(world_x);
+	return (SHORT)ConsoleXF(world_x, size);
 }
 
-SHORT ConsoleY(float world_y)
+SHORT ConsoleY(float world_y, float size)
 {
-	return (SHORT)ConsoleYF(world_y);
+	return (SHORT)ConsoleYF(world_y, size);
 }
 
+float WorldXF(float screen_x, float size)
+{
+	return screen_x / (SCREEN_RESOLUTION_X * size);
+}
+
+float WorldYF(float screen_y, float size)
+{
+	return screen_y / (SCREEN_RESOLUTION_Y * size);
+}
+
+float WorldX(SHORT screen_x, float size)
+{
+	return WorldXF((float)screen_x, size);
+}
+
+float WorldY(SHORT screen_y, float size)
+{
+	return WorldYF((float)screen_y, size);
+}
+
+// ï∂éöóÒï`âÊä÷êî
 void DrawString(float x, float y, const char* String, ATTR Color)
 {
 	Print({ ConsoleX(x), ConsoleY(y) }, Color, String);
 }
 
+// ê}å`ï`âÊä÷êî
 void DrawBox(float x1, float y1, float x2, float y2, ATTR Color, int FillFlag, const char* Str)
 {
 	SHORT cx1 = ConsoleX(x1);
@@ -36,7 +58,7 @@ void DrawBox(float x1, float y1, float x2, float y2, ATTR Color, int FillFlag, c
 	SHORT cx2 = ConsoleX(x2);
 	SHORT cy2 = ConsoleY(y2);
 
-	int str_len = MAX(1, strlen(Str));
+	int str_len = GetMax(1, strlen(Str));
 
 	SHORT ix, iy;
 	for (iy = cy1; iy <= cy2; iy++)
@@ -49,6 +71,7 @@ void DrawBox(float x1, float y1, float x2, float y2, ATTR Color, int FillFlag, c
 	}
 }
 
+// ê}å`ï`âÊä÷êî
 void DrawOval(float x, float y, float rx, float ry, ATTR Color, int FillFlag, const char* Str)
 {
 	SHORT cx = ConsoleX(x);
@@ -58,7 +81,7 @@ void DrawOval(float x, float y, float rx, float ry, ATTR Color, int FillFlag, co
 	float crxf = ConsoleXF(rx);
 	float cryf = ConsoleYF(ry);
 
-	int str_len = MAX(1, strlen(Str));
+	int str_len = GetMax(1, strlen(Str));
 
 	SHORT ix, iy;
 	for (iy = -cry; iy <= cry; iy++)
@@ -72,6 +95,7 @@ void DrawOval(float x, float y, float rx, float ry, ATTR Color, int FillFlag, co
 	}
 }
 
+// ê}å`ï`âÊä÷êî
 void DrawLine(float x1, float y1, float x2, float y2, ATTR Color, const char* Str)
 {
 	int cx1 = (int)ConsoleX(x1);
