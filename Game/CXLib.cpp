@@ -1,5 +1,5 @@
 #include "CXLib.h"
-#include "GameMain.h"
+#include "Game.h"
 #include "BufferedConsole.h"
 #include <string.h>
 #include "GameUtils.h"
