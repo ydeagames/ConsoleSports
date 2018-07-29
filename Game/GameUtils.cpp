@@ -1,5 +1,8 @@
 #include "GameUtils.h"
+#define _USE_MATH_DEFINES
 #include <math.h>
+#include <stdlib.h>
+#include <time.h>
 
 // 整数aとbを入れ替え
 void Swap(int* a, int* b)
@@ -17,16 +20,22 @@ void SwapF(float* a, float* b)
 	*b = tmp;
 }
 
-// 0.0≦x≦1.0 の小数ランダム生成
-float GetRandomF(void)
+// 0≦x≦max の整数ランダム生成
+int GetRand(int max)
 {
-	return (float)GetRand(RAND_MAX) / RAND_MAX;
+	return rand() % (max + 1);
 }
 
 // 0.0≦x≦max の小数ランダム生成
 float GetRandF(float max)
 {
 	return GetRandomF() * max;
+}
+
+// 0.0≦x≦1.0 の小数ランダム生成
+float GetRandomF(void)
+{
+	return (float)GetRand(RAND_MAX) / RAND_MAX;
 }
 
 // min≦x≦max の整数ランダム生成
@@ -124,13 +133,13 @@ float ClampF(float x, float min, float max)
 // 角度の単位変換([度]→[ラジアン])
 float ToRadians(float degree)
 {
-	return degree * DX_PI_F / 180.0f;
+	return degree * (float)M_PI / 180.0f;
 }
 
 // 角度の単位変換([ラジアン]→[度])
 float ToDegrees(float radian)
 {
-	return radian * 180.0f / DX_PI_F;
+	return radian * 180.0f / (float)M_PI;
 }
 
 // 0～maxの範囲でxは何%の位置にいるのか

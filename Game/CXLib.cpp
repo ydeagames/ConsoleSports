@@ -2,6 +2,7 @@
 #include "GameMain.h"
 #include "BufferedConsole.h"
 #include <string.h>
+#include "GameUtils.h"
 
 float ConsoleXF(float world_x)
 {
@@ -67,6 +68,43 @@ void DrawOval(float x, float y, float rx, float ry, ATTR Color, int FillFlag, co
 			float p = (ix*ix) / (crxf*crxf) + (iy*iy) / (cryf*cryf) - 1;
 			if (FillFlag ? p <= .08f : -.25f < p && p < .08f)
 				Print({ cx + ix, cy + iy }, Color, Str);
+		}
+	}
+}
+
+void DrawLine(float x1, float y1, float x2, float y2, ATTR Color, const char* Str)
+{
+	int cx1 = (int)ConsoleX(x1);
+	int cy1 = (int)ConsoleY(y1);
+	int cx2 = (int)ConsoleX(x2);
+	int cy2 = (int)ConsoleY(y2);
+
+	BOOL steep = GetAbs(cy2 - cy1) > GetAbs(cx2 - cx1);
+	if (steep)
+	{
+		Swap(&cx1, &cy1);
+		Swap(&cx2, &cy2);
+	}
+
+	{
+		int deltax = GetAbs(cx2 - cx1);
+		int deltay = GetAbs(cy2 - cy1);
+		int error = deltax / 2;
+
+		int incx = (cx1 < cx2) ? 1 : -1;
+		int incy = (cy1 < cy2) ? 1 : -1;
+
+		SHORT x;
+		SHORT y = cy1;
+		for (x = cx1; x != cx2; x += incx)
+		{
+			Print({ steep ? y : x, steep ? x : y }, Color, Str);
+
+			if ((error -= deltay) < 0)
+			{
+				y += incy;
+				error += deltax;
+			}
 		}
 	}
 }
