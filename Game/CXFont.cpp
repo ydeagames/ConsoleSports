@@ -1,9 +1,24 @@
+//__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/
+//! @file   CXFont.cpp
+//!
+//! @brief  コンソール・フォント
+//!
+//! @date   2018/07/29
+//!
+//! @author GF1 26 山口寛雅
+//__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/__/
+
+// ヘッダファイルの読み込み ================================================
+
 #include "CXFont.h"
 #include "CXLib.h"
 #include "GameMain.h"
 #include "GameUtils.h"
 #include <string.h>
 
+// 列挙型の定義 ============================================================
+
+// スプライト
 typedef struct
 {
 	char name;
@@ -13,12 +28,17 @@ typedef struct
 	int h;
 } Sprite;
 
-#define TEXTURE_ATLAS_WIDTH 60
-#define TEXTURE_ATLAS_HEIGHT 18
-#define NUM_FONTS 19
-#define FONT_SPAN_WIDTH 2.f
-#define FONT_SPAN_HEIGHT 2.f
+// 定数の定義 ==============================================================
 
+#define TEXTURE_ATLAS_WIDTH		60		// テクスチャアトラスの幅
+#define TEXTURE_ATLAS_HEIGHT	18		// テクスチャアトラスの高さ
+#define NUM_FONTS				19		// フォントの数
+#define FONT_SPAN_WIDTH			2.f		// 文字同士の横の空白
+#define FONT_SPAN_HEIGHT		2.f		// 文字同士の縦の空白
+
+// グローバル変数定義 ======================================================
+
+// テクスチャアトラス
 static char* texture_atlas[TEXTURE_ATLAS_HEIGHT] = {
 	"11   1111  1111  1  1  1111  11111 11111  11111 11111  11111",
 	"11   1111  1111  1  1  1111  11111 11111  11111 11111  11111",
@@ -40,6 +60,7 @@ static char* texture_atlas[TEXTURE_ATLAS_HEIGHT] = {
 	"                   1111                                     "
 };
 
+// フォント・スプライト
 static Sprite fonts[NUM_FONTS] = {
 	{ '1', 0, 0, 3, 7 },
 	{ '2', 5, 0, 4, 7 },
@@ -68,7 +89,7 @@ CXFont CreateFontToHandle(CXFontType Font, int Size)
 	return { Font, (float)Size };
 }
 
-
+// ピクセルを取得
 static char GetPixel(int x, int y)
 {
 	return texture_atlas[y][x];
@@ -87,28 +108,39 @@ float GetDrawStringWidthToHandle(const char* String, const CXFont* FontHandle)
 	{
 	default:
 	case CXFONT_DEFAULT:
+		// 文字数=幅
 		return WorldX((SHORT)strlen(String));
 		break;
 	case CXFONT_PONG:
+		// サイズの比
 		float size = 7 / FontHandle->size;
+		// フォントの幅
 		float font_w = 0;
+		// フォント左上のX座標
 		float font_x = 0;
+		// 文字ループ
 		const char* c;
 		for (c = String; *c != '\0'; c++)
 		{
+			// スプライト
 			Sprite* sprite = NULL;
 
+			// 改行だったら
 			if (*c == '\n')
 			{
+				// 幅を取得
 				font_w = GetMaxF(font_w, font_x);
+				// X座標を戻す
 				font_x = 0;
 				continue;
 			}
 
+			// スプライトを取得
 			{
 				int i;
 				for (i = 0; i < NUM_FONTS; i++)
 				{
+					// 一致していたら取得
 					if (fonts[i].name == *c)
 					{
 						sprite = &fonts[i];
@@ -116,11 +148,14 @@ float GetDrawStringWidthToHandle(const char* String, const CXFont* FontHandle)
 					}
 				}
 			}
+
+			// スプライトがあれば幅を加算
 			if (sprite != NULL)
 			{
 				font_x += sprite->w + FONT_SPAN_WIDTH;
 			}
 		}
+		// フォントの幅の最大
 		font_w = GetMaxF(font_w, font_x);
 		return font_w;
 		break;
@@ -134,30 +169,43 @@ void DrawStringToHandle(float x, float y, const char* String, ATTR Color, const 
 	{
 	default:
 	case CXFONT_DEFAULT:
+		// 文字列をそのまま描画
 		DrawString(x, y, String, Color);
 		break;
 	case CXFONT_PONG:
+		// サイズの比
 		float size = 7 / FontHandle->size;
+		// フォント左上のX座標
 		float font_x = 0;
+		// フォント左上のY座標
 		float font_y = 0;
+		// フォントの最大高さ
 		float font_h = 0;
+		// 文字ループ
 		const char* c;
 		for (c = String; *c != '\0'; c++)
 		{
+			// スプライト
 			Sprite* sprite = NULL;
 
+			// 改行だったら
 			if (*c == '\n')
 			{
+				// フォント左上のX座標をリセット
 				font_x = 0;
+				// X座標を戻す
 				font_y += font_h + FONT_SPAN_HEIGHT;
+				// 最大高さのリセット
 				font_h = 0;
 				continue;
 			}
 
+			// スプライトを取得
 			{
 				int i;
 				for (i = 0; i < NUM_FONTS; i++)
 				{
+					// 一致していたら取得
 					if (fonts[i].name == *c)
 					{
 						sprite = &fonts[i];
@@ -165,20 +213,27 @@ void DrawStringToHandle(float x, float y, const char* String, ATTR Color, const 
 					}
 				}
 			}
+			// スプライトがあれば
 			if (sprite != NULL)
 			{
+				// 文字の幅
 				int str_len = GetMax(1, strlen(Str));
 
+				// Yループ
 				SHORT ix, iy;
 				for (iy = 0; WorldYF(iy) < sprite->h / size; iy += 1)
 				{
+					// Xループ
 					for (ix = 0; WorldXF(ix) < sprite->w / size; ix += str_len)
 					{
+						// ピクセルが1だったら描画
 						if (GetPixel(sprite->x + (int)(WorldX(ix) * size), sprite->y + (int)(WorldY(iy) * size)) == '1')
 							Print({ ConsoleX(font_x / size + x) + ix, ConsoleY(font_y / size + y) + iy }, Color, Str);
 					}
 				}
+				// フォント左上のX座標を進める
 				font_x += sprite->w + FONT_SPAN_WIDTH;
+				// フォントの最大高さを更新
 				font_h = GetMaxF(font_y, WorldY(sprite->h));
 			}
 		}
