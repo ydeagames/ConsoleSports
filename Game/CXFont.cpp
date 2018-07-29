@@ -16,8 +16,8 @@ typedef struct
 #define TEXTURE_ATLAS_WIDTH 60
 #define TEXTURE_ATLAS_HEIGHT 18
 #define NUM_FONTS 19
-#define FONT_SPAN_WIDTH 2
-#define FONT_SPAN_HEIGHT 2
+#define FONT_SPAN_WIDTH 2.f
+#define FONT_SPAN_HEIGHT 2.f
 
 static char* texture_atlas[TEXTURE_ATLAS_HEIGHT] = {
 	"11   1111  1111  1  1  1111  11111 11111  11111 11111  11111",
@@ -77,6 +77,7 @@ void DrawStringToHandle(float x, float y, const char* String, ATTR Color, const 
 		DrawString(x, y, String, Color);
 		break;
 	case CXFONT_PONG:
+		float size = 7 / FontHandle->size;
 		float font_x = 0;
 		float font_y = 0;
 		float font_h = 0;
@@ -88,7 +89,7 @@ void DrawStringToHandle(float x, float y, const char* String, ATTR Color, const 
 			if (*c == '\n')
 			{
 				font_x = 0;
-				font_y += font_h + WorldY(FONT_SPAN_HEIGHT);
+				font_y += font_h + FONT_SPAN_HEIGHT;
 				font_h = 0;
 				continue;
 			}
@@ -108,13 +109,13 @@ void DrawStringToHandle(float x, float y, const char* String, ATTR Color, const 
 			{
 				int str_len = GetMax(1, strlen(Str));
 
-				float ix, iy;
-				for (iy = 0; iy < ConsoleYF((float)sprite->h); iy+=WorldY(1))
+				SHORT ix, iy;
+				for (iy = 0; WorldYF(iy) < sprite->h / size; iy += 1)
 				{
-					for (ix = 0; ix < ConsoleXF((float)sprite->w); ix+=WorldX(str_len))
+					for (ix = 0; WorldXF(ix) < sprite->w / size; ix += str_len)
 					{
-						if (GetPixel(sprite->x + (int)ix, sprite->y + (int)iy) == '1')
-							DrawString(font_x + x + ix, font_y + y + iy, Str, Color);
+						if (GetPixel(sprite->x + (int)(WorldX(ix) * size), sprite->y + (int)(WorldY(iy) * size)) == '1')
+							Print({ ConsoleX(font_x / size + x) + ix, ConsoleY(font_y / size + y) + iy }, Color, Str);
 					}
 				}
 			}

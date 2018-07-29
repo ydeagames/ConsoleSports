@@ -111,7 +111,7 @@ void UpdateGame(void)
 //----------------------------------------------------------------------
 void RenderGame(void)
 {
-	CXFont font = { CXFONT_PONG, 6 };
+	CXFont font = { CXFONT_PONG, 14 };
 	//DrawString(g_pos_x, g_pos_y, /*"**\n**"*/"abcdefg\nhijklmn\ndkuyrgca\nauycgfbag");
 	//DrawBox(g_pos_x - 4, g_pos_y - 4, g_pos_x + 4, g_pos_y + 4, CreateATTR(COLOR_BLACK, COLOR_WHITE), TRUE, " ");
 	DrawLine(20, 20, g_pos_x, g_pos_y, CreateATTR(COLOR_BLACK, COLOR_WHITE), " ");
