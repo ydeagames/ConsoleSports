@@ -147,7 +147,6 @@ void UpdateGameSceneDemo(void)
 
 			// シーンをプレイに変更
 			g_scene.game_state = STATE_PLAY;
-			g_scene.packet = PACKET_START;
 		}
 	}
 
@@ -179,7 +178,6 @@ void UpdateGameSceneServe(void)
 
 		// シーンをプレイに変更
 		g_scene.game_state = STATE_PLAY;
-		g_scene.packet = PACKET_SERVE;
 
 		g_scene.counter = 0;
 	}
@@ -255,13 +253,11 @@ void UpdateGameScore(ObjectSide side)
 
 		// シーンをデモに変更
 		g_scene.game_state = STATE_DEMO;
-		g_scene.packet = PACKET_END;
 	}
 	else
 	{
 		// シーンをサーブに変更
 		g_scene.game_state = STATE_SERVE;
-		g_scene.packet = PACKET_SCORE;
 	}
 }
 
