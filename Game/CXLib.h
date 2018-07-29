@@ -1,6 +1,10 @@
 #pragma once
 #include "BufferedConsole.h"
 
+#define CX_PI_F (3.1415926535897932384626433832795f)
+
+extern const ATTR ATTR_WHITE;
+
 float ConsoleXF(float world_x, float size = 1);
 
 float ConsoleYF(float world_y, float size = 1);

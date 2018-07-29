@@ -1,6 +1,7 @@
 #include "Vec2.h"
 #include "Game.h"
 #include <math.h>
+#include "GameUtils.h"
 
 // ’è”‚Ì’è‹` ==============================================================
 

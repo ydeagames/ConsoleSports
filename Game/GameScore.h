@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "CXFont.h"
 
 // 構造体の宣言 ============================================================
 
@@ -32,4 +33,4 @@ void GameScore_Clear(GameScore* score);
 BOOL GameScore_IsFinished(GameScore* score);
 
 // <スコア描画>
-void GameScore_Render(GameScore* score, GameObject* field, HFNT font);
+void GameScore_Render(GameScore* score, GameObject* field, CXFont font);

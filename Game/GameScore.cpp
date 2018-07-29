@@ -38,7 +38,7 @@ BOOL GameScore_IsFinished(GameScore* score)
 }
 
 // <スコア描画>
-void GameScore_Render(GameScore* score, GameObject* field, HFNT font)
+void GameScore_Render(GameScore* score, GameObject* field, CXFont font)
 {
 	// スコア描画
 

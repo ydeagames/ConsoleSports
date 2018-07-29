@@ -4,6 +4,8 @@
 #include <string.h>
 #include "GameUtils.h"
 
+const ATTR ATTR_WHITE = CreateATTR(COLOR_BLACK, COLOR_WHITE);
+
 float ConsoleXF(float world_x, float size)
 {
 	return world_x * (SCREEN_RESOLUTION_X * size);

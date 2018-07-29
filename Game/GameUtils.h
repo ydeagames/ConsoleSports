@@ -54,6 +54,12 @@ float Clamp(int x, int min, int max);
 // 小数を範囲内に収める
 float ClampF(float x, float min, float max);
 
+// 角度の単位変換([度]→[ラジアン])
+float ToRadians(float degree);
+
+// 角度の単位変換([ラジアン]→[度])
+float ToDegrees(float radian);
+
 // 0～maxの範囲でxは何%の位置にいるのか
 // ※ 範囲外は範囲内に収められます
 float GetPercentage(float x, float max);

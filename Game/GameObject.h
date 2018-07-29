@@ -1,5 +1,6 @@
 #pragma once
 #include "Game.h"
+#include "CXLib.h"
 #include "Vec2.h"
 #include "GameTimer.h"
 
@@ -40,45 +41,7 @@ typedef enum
 	SHAPE_CIRCLE,				// 円
 } ObjectShape;
 
-// <アニメーションの結果> ----------------------------------------------
-typedef enum
-{
-	ANIMATION_RUNNING,			// アニメーションが実行中の状態
-	ANIMATION_FINISHED,			// アニメーション再生が完了した状態
-} AnimationState;
-
 // 構造体の宣言 ============================================================
-
-// <テクスチャ>
-typedef struct
-{
-	HGRP texture;				// <テクスチャ>
-	Vec2 anchor;				// <テクスチャ基点>
-	Vec2 size;					// <テクスチャサイズ>
-	Vec2 center;				// <テクスチャ中心>
-} GameTexture;
-
-// <スプライトアニメーション>
-typedef struct
-{
-	int frame_start;			// 開始フレームのインデックス
-	int frame_end;				// 終了フレームのインデックス
-	int num_columns;			// 1行あたりのフレーム数
-	int frame_duration;			// フレーム間隔
-	int frame_index;			// 現在のフレームのインデックス
-	int elapsed_time;			// 現在のフレームの経過時間
-} GameSpriteAnimation;
-
-// <スプライトオブジェクト>
-typedef struct
-{
-	unsigned int color;			// <色>
-	GameTexture texture;		// <テクスチャ>
-	Vec2 offset;				// <オフセット>
-	float scale;				// <スケール>
-	float angle;				// <回転>
-	GameSpriteAnimation animation;	// <スプライトアニメーション>
-} GameSprite;
 
 // <ゲームオブジェクト>
 typedef struct
@@ -87,7 +50,7 @@ typedef struct
 	Vec2 vel;					// <速度>
 	Vec2 size;					// <大きさ>
 	ObjectShape shape;			// <形>
-	GameSprite sprite;			// <スプライト>
+	ATTR color;					// <色>
 	ObjectConnection sprite_connection;	// <スプライトのつながり>
 	BOOL alive;					// <表示状態>
 	int state;					// <状態>
@@ -102,41 +65,6 @@ typedef struct
 #define TEXTURE_NONE -2			// テクスチャなし
 
 // 関数の宣言 ==============================================================
-
-// <<テクスチャ>> ------------------------------------------------------
-
-// <テクスチャ作成>
-GameTexture GameTexture_Create(HGRP texture, Vec2 anchor, Vec2 size);
-
-// <テクスチャなし>
-GameTexture GameTexture_CreateNone();
-
-// <<スプライトアニメーション>> ----------------------------------------
-
-// <スプライトアニメーション作成>
-GameSpriteAnimation GameSpriteAnimation_Create(int frames_start, int frames_end, int num_columns, int frame_duration);
-
-// <スプライトアニメーションなし>
-GameSpriteAnimation GameSpriteAnimation_CreateNone();
-
-// <スプライトアニメーション更新>
-AnimationState GameSpriteAnimation_Update(GameSpriteAnimation* obj);
-
-// <<スプライト>> ------------------------------------------------------
-
-// <スプライト作成>
-GameSprite GameSprite_Create(GameTexture texture, float scale = 1, float angle = 0);
-
-// <スプライトなし>
-GameSprite GameSprite_CreateNone();
-
-// <スプライト描画>
-void GameSprite_Render(const GameSprite* sprite, const Vec2* pos);
-
-// <<ティック>> --------------------------------------------------------
-
-// <オブジェクト作成>
-void GameTick_Update(void);
 
 // <<オブジェクト>> ----------------------------------------------------
 

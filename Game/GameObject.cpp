@@ -28,107 +28,12 @@ static BOOL GameObject_IsHitBox(GameObject* obj1, GameObject* obj2);
 
 // 関数の定義 ==============================================================
 
-// <<テクスチャ>> ------------------------------------------------------
-
-// <テクスチャ作成>
-GameTexture GameTexture_Create(HGRP texture, Vec2 anchor, Vec2 size)
-{
-	return{ texture, anchor, size, Vec2_Create(size.x / 2, size.y / 2) };
-}
-
-// <テクスチャなし>
-GameTexture GameTexture_CreateNone()
-{
-	return GameTexture_Create(TEXTURE_NONE, Vec2_Create(), Vec2_Create());
-}
-
-// <<スプライトアニメーション>> ----------------------------------------
-
-// <スプライトアニメーション作成>
-GameSpriteAnimation GameSpriteAnimation_Create(int frames_start, int frames_end, int num_columns, int frame_duration)
-{
-	return{ frames_start, frames_end, num_columns, frame_duration, frames_start, 0 };
-}
-
-// <スプライトアニメーションなし>
-GameSpriteAnimation GameSpriteAnimation_CreateNone()
-{
-	return GameSpriteAnimation_Create(0, 0, 1, 1);
-}
-
-// <スプライトアニメーション更新>
-AnimationState GameSpriteAnimation_Update(GameSpriteAnimation* animate_sprite)
-{
-	AnimationState result = ANIMATION_FINISHED;
-
-	animate_sprite->elapsed_time++;
-
-	if (animate_sprite->elapsed_time > animate_sprite->frame_duration)
-	{
-		animate_sprite->elapsed_time = 0;
-		animate_sprite->frame_index++;
-
-		if (animate_sprite->frame_index > animate_sprite->frame_end)
-		{
-			animate_sprite->frame_index = animate_sprite->frame_start;
-			result = ANIMATION_RUNNING;
-		}
-	}
-
-	return result;
-}
-
-// <<スプライト>> ------------------------------------------------------
-
-// <スプライト作成>
-GameSprite GameSprite_Create(GameTexture texture, float scale, float angle)
-{
-	return{ COLOR_WHITE, texture, Vec2_Create(), scale, angle, GameSpriteAnimation_CreateNone() };
-}
-
-// <スプライトなし>
-GameSprite GameSprite_CreateNone()
-{
-	return GameSprite_Create(GameTexture_CreateNone(), 0, 0);
-}
-
-// <スプライト描画>
-void GameSprite_Render(const GameSprite* sprite, const Vec2* pos)
-{
-	int column = sprite->animation.frame_index%sprite->animation.num_columns;
-	int row = sprite->animation.frame_index%sprite->animation.num_columns;
-
-	Vec2 anchor = Vec2_Add(&sprite->texture.anchor, &Vec2_Create(sprite->texture.size.x * column, sprite->texture.size.y * row));
-
-	// スプライト描画
-	DrawRectRotaGraph2F(
-		pos->x + sprite->offset.x, pos->y + sprite->offset.y,
-		(int)anchor.x, (int)anchor.y,
-		(int)sprite->texture.size.x, (int)sprite->texture.size.y,
-		sprite->texture.center.x, sprite->texture.center.y,
-		(double)sprite->scale,
-		(double)sprite->angle,
-		sprite->texture.texture,
-		TRUE
-	);
-}
-
-// <<ティック>> --------------------------------------------------------
-
-// <オブジェクト作成>
-void GameTick_Update(void)
-{
-	int now = GetNowCount();
-	g_deltamilliseconds = GetMin(100, now - g_lastcount);
-	g_lastcount = now;
-}
-
 // <<オブジェクト>> ----------------------------------------------------
 
 // <オブジェクト作成>
 GameObject GameObject_Create(Vec2 pos, Vec2 vel, Vec2 size)
 {
-	return{ pos, vel, size, SHAPE_BOX, GameSprite_CreateNone(), CONNECTION_NONE, TRUE, 1, 0, GameTimer_Create() };
+	return{ pos, vel, size, SHAPE_BOX, CONNECTION_NONE, CreateATTR(COLOR_BLACK, COLOR_WHITE), TRUE, 1, 0, GameTimer_Create() };
 }
 
 // <オブジェクト削除>
@@ -315,126 +220,29 @@ void GameObject_Render(const GameObject* obj, const Vec2* translate)
 	float box_yb = GameObject_GetY(obj, BOTTOM) + translate->y;
 	Vec2 box_t = Vec2_Create(box_xc, box_ym);
 
-	// テクスチャを確認
-	if (obj->sprite.texture.texture == TEXTURE_NONE)
+	switch (obj->shape)
 	{
-		switch (obj->shape)
-		{
-		default:
-		case SHAPE_BOX:
-			// 矩形描画
-			if (DEBUG_HITBOX)
-				DrawBoxAA(box_xl, box_yt, box_xr, box_yb, obj->sprite.color, FALSE, .5f);
-			else
-				DrawBoxAA(box_xl, box_yt, box_xr, box_yb, obj->sprite.color, TRUE);
-			break;
-		case SHAPE_CIRCLE:
-		{
-			float r1 = GetMinF(obj->size.x, obj->size.y) / 2;
-			// 円
-			if (DEBUG_HITBOX)
-			{
-				DrawCircleAA(box_xc, box_ym, r1, 120, obj->sprite.color, FALSE, .5f);
-				DrawBoxAA(box_xl, box_yt, box_xr, box_yb, obj->sprite.color, FALSE, .5f);
-			}
-			else
-				DrawCircleAA(box_xc, box_ym, r1, 120, obj->sprite.color, TRUE);
-			break;
-		}
-		}
-	}
-	else
-	{
-		if (obj->sprite.texture.texture != TEXTURE_MISSING)
-		{
-			switch (obj->sprite_connection)
-			{
-			case CONNECTION_LOOP:
-			case CONNECTION_BARRIER:
-			{
-				// リピートタイル (回転、テクスチャ中心座標 には未対応)
-				Vec2 center_offset = Vec2_Scale(&obj->sprite.texture.center, obj->sprite.scale);
-				Vec2 sp_pos = Vec2_Add(&box_t, &obj->sprite.offset);
-				Vec2 sp_size = Vec2_Scale(&obj->sprite.texture.size, obj->sprite.scale);
-
-				float go_left = box_xl;
-				float go_right = box_xr;
-				float go_top = box_yt;
-				float go_bottom = box_yb;
-
-				float sp_left = sp_pos.x - sp_size.x / 2;
-				float sp_right = sp_pos.x + sp_size.x / 2;
-				float sp_top = sp_pos.y - sp_size.y / 2;
-				float sp_bottom = sp_pos.y + sp_size.y / 2;
-
-				switch (obj->sprite_connection)
-				{
-				case CONNECTION_BARRIER:
-					if (sp_left < go_right && go_left < sp_right && sp_top < go_bottom && go_top < sp_bottom)
-						GameSprite_Render(&obj->sprite, &box_t);
-					break;
-				case CONNECTION_LOOP:
-					float offset_x = GetLoopRangeF(go_left, sp_left, sp_right) - sp_left;
-					float offset_y = GetLoopRangeF(go_top, sp_top, sp_bottom) - sp_top;
-
-					if (sp_size.x >= 1.f && sp_size.y >= 1.f)
-					{
-						for (float iy = go_top + sp_size.y / 2 - offset_y - center_offset.y; iy < go_bottom; iy += sp_size.y)
-						{
-							for (float ix = go_left + sp_size.x / 2 - offset_x - center_offset.x; ix < go_right; ix += sp_size.x)
-							{
-								GameSprite_Render(&obj->sprite, &Vec2_Create(ix + sp_size.x / 2 - obj->sprite.offset.x, iy + sp_size.y / 2 - obj->sprite.offset.y));
-
-								if (DEBUG_HITBOX)
-									DrawBoxAA(ix, iy, ix + sp_size.x, iy + sp_size.y, obj->sprite.color, FALSE, .5f);
-							}
-						}
-					}
-
-					if (DEBUG_HITBOX)
-						DrawBoxAA(sp_left, sp_top, sp_right, sp_bottom, obj->sprite.color, FALSE, .5f);
-
-					break;
-				}
-
-				break;
-			}
-			default:
-				GameSprite_Render(&obj->sprite, &box_t);
-				break;
-			}
-		}
+	default:
+	case SHAPE_BOX:
+		// 矩形描画
+		if (DEBUG_HITBOX)
+			DrawBoxAA(box_xl, box_yt, box_xr, box_yb, obj->sprite.color, FALSE, .5f);
 		else
-		{
-			// NULLテクスチャを表示
-			DrawBoxAA(box_xl, box_yt, box_xr, box_yb, COLOR_BLACK, TRUE);
-			DrawBoxAA(box_xl, box_yt, box_xc, box_ym, COLOR_FUCHSIA, TRUE);
-			DrawBoxAA(box_xc, box_ym, box_xr, box_yb, COLOR_FUCHSIA, TRUE);
-			//DrawBoxAA(box_xl, box_yt, box_xr, box_yb, obj->sprite.color, FALSE, .5f);
-		}
-
-		// デバッグ当たり判定枠を表示
+			DrawBoxAA(box_xl, box_yt, box_xr, box_yb, obj->sprite.color, TRUE);
+		break;
+	case SHAPE_CIRCLE:
+	{
+		float r1 = GetMinF(obj->size.x, obj->size.y) / 2;
+		// 円
 		if (DEBUG_HITBOX)
 		{
-			switch (obj->shape)
-			{
-			default:
-			case SHAPE_BOX:
-				DrawBoxAA(box_xl, box_yt, box_xr, box_yb, obj->sprite.color, FALSE, .5f);
-				DrawLineAA(box_xl, box_yt, box_xr, box_yb, obj->sprite.color, .5f);
-				DrawLineAA(box_xr, box_yt, box_xl, box_yb, obj->sprite.color, .5f);
-				break;
-			case SHAPE_CIRCLE:
-			{
-				float r1 = GetMinF(obj->size.x, obj->size.y) / 2;
-				DrawCircleAA(box_xc, box_ym, r1, 120, obj->sprite.color, FALSE, .5f);
-				DrawBoxAA(box_xl, box_yt, box_xr, box_yb, obj->sprite.color, FALSE, .5f);
-				DrawLineAA(box_xl, box_yt, box_xr, box_yb, obj->sprite.color, .5f);
-				DrawLineAA(box_xr, box_yt, box_xl, box_yb, obj->sprite.color, .5f);
-				break;
-			}
-			}
+			DrawCircleAA(box_xc, box_ym, r1, 120, obj->sprite.color, FALSE, .5f);
+			DrawBoxAA(box_xl, box_yt, box_xr, box_yb, obj->sprite.color, FALSE, .5f);
 		}
+		else
+			DrawCircleAA(box_xc, box_ym, r1, 120, obj->sprite.color, TRUE);
+		break;
+	}
 	}
 }
 

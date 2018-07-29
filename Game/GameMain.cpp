@@ -14,8 +14,6 @@
 #include "GameObjects.h"
 #include "GameControllers.h"
 #include "GameScore.h"
-#include "GameResource.h"
-#include "GameMenu.h"
 #include "GameScene.h"
 
 
@@ -35,12 +33,6 @@ GameScene g_scene;
 
 // <コントローラー> ----------------------------------------------------
 GameControllers g_controllers;
-
-// <リソース> ----------------------------------------------------------
-GameResource g_resources;
-
-// <メニュー> ----------------------------------------------------------
-GameMenu g_menu;
 
 
 // 関数の宣言 ==============================================================
@@ -94,17 +86,11 @@ void InitializeGame(void)
 	g_controllers.paddle2 = GameController_Player_Create(&g_scene.paddle2, &g_scene, &g_scene.paddle1, PAD_INPUT_UP, PAD_INPUT_DOWN);
 	//g_controllers.paddle2 = GameController_Bot_Create(&g_scene.paddle2, &g_scene, &g_scene.paddle1);
 
-	// リソース
-	g_resources = GameResource_Create();
-
 	// 得点
 	g_scene.score = GameScore_Create();
 
 	// サーブ待機
 	g_scene.counter = 0;
-
-	// メニュー
-	g_menu = GameMenu_Create(&g_scene, &g_controllers, &g_resources);
 }
 
 
@@ -117,8 +103,6 @@ void InitializeGame(void)
 //----------------------------------------------------------------------
 void UpdateGame(void)
 {
-	GameTick_Update();
-
 	switch (g_scene.game_state)
 	{
 	case STATE_DEMO:
@@ -235,18 +219,18 @@ void UpdateGameScenePlay(void)
 	if (GameObject_Field_CollisionVertical(&g_scene.field, &g_scene.ball, CONNECTION_BARRIER, EDGESIDE_INNER))
 	{
 		g_scene.ball.vel.y *= -1;
-		PlaySoundMem(g_resources.sound_se02, DX_PLAYTYPE_BACK);
+		//PlaySoundMem(g_resources.sound_se02, DX_PLAYTYPE_BACK);
 	}
 	{
 		ObjectSide side = GameObject_Field_CollisionHorizontal(&g_scene.field, &g_scene.ball, CONNECTION_NONE, EDGESIDE_OUTER);
 		if (side)
 		{
 			UpdateGameScore(side);
-			PlaySoundMem(g_resources.sound_se03, DX_PLAYTYPE_BACK);
+			//PlaySoundMem(g_resources.sound_se03, DX_PLAYTYPE_BACK);
 		}
 	}
 	if (GameObject_Paddle_CollisionBall(&g_scene.paddle1, &g_scene.ball) || GameObject_Paddle_CollisionBall(&g_scene.paddle2, &g_scene.ball))
-		PlaySoundMem(g_resources.sound_se01, DX_PLAYTYPE_BACK);
+		;// PlaySoundMem(g_resources.sound_se01, DX_PLAYTYPE_BACK);
 	GameObject_Field_CollisionVertical(&g_scene.field, &g_scene.paddle1, CONNECTION_BARRIER, EDGESIDE_INNER);
 	GameObject_Field_CollisionVertical(&g_scene.field, &g_scene.paddle2, CONNECTION_BARRIER, EDGESIDE_INNER);
 }
@@ -356,5 +340,4 @@ void RenderGameScenePlay(void)
 //----------------------------------------------------------------------
 void FinalizeGame(void)
 {
-	GameResource_Delete(&g_resources);
 }
