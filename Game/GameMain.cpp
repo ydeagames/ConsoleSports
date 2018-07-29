@@ -21,7 +21,7 @@
 // 定数の定義 ==============================================================
 
 // <点差ガイド> --------------------------------------------------------
-#define SCORE_TO_GUID 6
+#define SCORE_TO_GUID 2
 
 // <サーブ待機> --------------------------------------------------------
 #define SERVE_WAIT_TIME 2*60
@@ -72,6 +72,7 @@ void InitializeGame(void)
 
 	// ボール
 	g_scene.ball = GameObject_Ball_Create();
+	g_scene.ball.color = CreateATTR(COLOR_BLACK, COLOR_YELLOW);
 	GameObject_Ball_SetPosXDefault(&g_scene.ball, &g_scene.field);
 	GameObject_Ball_SetPosYDefault(&g_scene.ball, &g_scene.field);
 	GameObject_Ball_SetVelXDefault(&g_scene.ball);
@@ -79,12 +80,14 @@ void InitializeGame(void)
 
 	// パドル1
 	g_scene.paddle1 = GameObject_Paddle_Create();
+	g_scene.paddle1.color = CreateATTR(COLOR_BLACK, COLOR_RED);
 	g_scene.paddle1.pos.x = GameObject_OffsetX(&g_scene.paddle1, LEFT, GameObject_GetX(&g_scene.field, LEFT), -12);
 	GameObject_Paddle_SetPosYDefault(&g_scene.paddle1, &g_scene.field);
 	g_controllers.paddle1 = GameController_Bot_Create(&g_scene.paddle1, &g_scene, &g_scene.paddle2);
 
 	// パドル2
 	g_scene.paddle2 = GameObject_Paddle_Create();
+	g_scene.paddle2.color = CreateATTR(COLOR_BLACK, COLOR_BLUE);
 	g_scene.paddle2.pos.x = GameObject_OffsetX(&g_scene.paddle2, RIGHT, GameObject_GetX(&g_scene.field, RIGHT), -12);
 	GameObject_Paddle_SetPosYDefault(&g_scene.paddle2, &g_scene.field);
 	g_controllers.paddle2 = GameController_Player_Create(&g_scene.paddle2, &g_scene, &g_scene.paddle1, KEY_UP, KEY_DOWN);
@@ -296,10 +299,21 @@ void RenderGameSceneDemo(void)
 	// メニュー描画
 	{
 		float width = GetDrawStringWidthToHandle("Pong Game", &g_font_pong);
-		DrawStringToHandle(GameObject_GetX(&g_scene.field, CENTER_X) - width / 2 - 10, GameObject_GetY(&g_scene.field, CENTER_Y), "Pong Game", ATTR_WHITE, &g_font_pong);
-		DrawString(GameObject_GetX(&g_scene.field, CENTER_X) - 10, GameObject_GetY(&g_scene.field, CENTER_Y) + 18, "スペースキーを押してゲームを始めよう！", CreateATTR(COLOR_YELLOW, COLOR_BLACK));
-		DrawString(GameObject_GetX(&g_scene.field, CENTER_X) - 11, GameObject_GetY(&g_scene.field, CENTER_Y) + 20, "↑↓キーで右パドルを操作してCPUを倒そう！", CreateATTR(COLOR_MAGENTA, COLOR_BLACK));
-		DrawString(GameObject_GetX(&g_scene.field, CENTER_X) - 12, GameObject_GetY(&g_scene.field, CENTER_Y) + 22, "ゲームが早く終わるように5点マッチにしました！", CreateATTR(COLOR_GREEN, COLOR_BLACK));
+		//DrawBox(GameObject_GetX(&g_scene.field, LEFT, -39), GameObject_GetY(&g_scene.field, CENTER_Y) - 9, GameObject_GetX(&g_scene.field, RIGHT, -38), GameObject_GetY(&g_scene.field, CENTER_Y) + 7, CreateATTR(COLOR_BLACK, COLOR_BLACK), TRUE);
+		DrawStringToHandle(GameObject_GetX(&g_scene.field, CENTER_X) - width / 2 - 10, GameObject_GetY(&g_scene.field, CENTER_Y) - 7, "Pong Game", CreateATTR(COLOR_BLACK, COLOR_CYAN), &g_font_pong);
+		DrawString(GameObject_GetX(&g_scene.field, CENTER_X) + 20, GameObject_GetY(&g_scene.field, CENTER_Y) + 7, "～レトロな卓球スポーツゲーム～", CreateATTR(COLOR_YELLOW, COLOR_BLACK));
+		DrawLine(GameObject_GetX(&g_scene.field, LEFT, -39), GameObject_GetY(&g_scene.field, CENTER_Y) + 5, GameObject_GetX(&g_scene.field, RIGHT, -38), GameObject_GetY(&g_scene.field, CENTER_Y) + 5, CreateATTR(COLOR_BLACK, COLOR_DARK_GREEN));
+
+		DrawBox(GameObject_GetX(&g_scene.field, LEFT, -39), GameObject_GetY(&g_scene.field, CENTER_Y) + 14, GameObject_GetX(&g_scene.field, RIGHT, -38), GameObject_GetY(&g_scene.field, CENTER_Y) + 28, CreateATTR(COLOR_BLACK, COLOR_BLACK), TRUE);
+		DrawBox(GameObject_GetX(&g_scene.field, LEFT, -39), GameObject_GetY(&g_scene.field, CENTER_Y) + 14, GameObject_GetX(&g_scene.field, RIGHT, -38), GameObject_GetY(&g_scene.field, CENTER_Y) + 28, CreateATTR(COLOR_BLACK, COLOR_DARK_MAGENTA), FALSE);
+
+		DrawString(GameObject_GetX(&g_scene.field, CENTER_X) - 10, GameObject_GetY(&g_scene.field, CENTER_Y) + 17, "スペースキーを押してゲームを始めよう！", CreateATTR(COLOR_YELLOW, COLOR_BLACK));
+		DrawString(GameObject_GetX(&g_scene.field, CENTER_X) - 11, GameObject_GetY(&g_scene.field, CENTER_Y) + 19, "↑↓キーで右パドルを操作してCPUを倒そう！", CreateATTR(COLOR_MAGENTA, COLOR_BLACK));
+		DrawString(GameObject_GetX(&g_scene.field, CENTER_X) - 11, GameObject_GetY(&g_scene.field, CENTER_Y) + 21, "忙しいあなたのために5点マッチにしました！", CreateATTR(COLOR_GREEN, COLOR_BLACK));
+		DrawString(GameObject_GetX(&g_scene.field, CENTER_X) - 10, GameObject_GetY(&g_scene.field, CENTER_Y) + 23, "2点差がつくと、ガイドが表示されるYO！", CreateATTR(COLOR_DARK_BLUE, COLOR_BLACK));
+		DrawString(GameObject_GetX(&g_scene.field, CENTER_X) - 14, GameObject_GetY(&g_scene.field, CENTER_Y) + 25, "Pong Gameだって卓球という立派なスポーツゲームダゾ！", CreateATTR(COLOR_DARK_GRAY, COLOR_BLACK));
+
+		DrawString(GameObject_GetX(&g_scene.field, RIGHT, -17), GameObject_GetY(&g_scene.field, BOTTOM, -3), "Copyrights 2018 YdeaGames", CreateATTR(COLOR_GRAY, COLOR_BLACK));
 	}
 	// スコア描画
 	GameScore_Render(&g_scene.score, &g_scene.field, g_font_pong);

@@ -51,5 +51,5 @@ void GameScore_Render(GameScore* score, GameObject* field, CXFont font)
 
 	DrawStringToHandle(field->pos.x - 25 - width_score1, GameObject_GetY(field, TOP, -6), str, CreateATTR(COLOR_RED, COLOR_RED), &font);
 	snprintf(str, 10, "%2d", score->score2);
-	DrawStringToHandle(field->pos.x + 25 - 17, GameObject_GetY(field, TOP, -6), str, CreateATTR(COLOR_BLUE, COLOR_BLUE), &font);
+	DrawStringToHandle(field->pos.x + 25 - 10, GameObject_GetY(field, TOP, -6), str, CreateATTR(COLOR_BLUE, COLOR_BLUE), &font);
 }
