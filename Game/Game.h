@@ -54,4 +54,4 @@ typedef int		BOOL;																						// 真偽値
 
 // グローバル変数の宣言 ====================================================
 
-extern float delta_seconds;
+extern float delta_seconds;																					// 前のフレームからの経過時間(秒)
