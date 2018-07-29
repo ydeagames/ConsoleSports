@@ -119,7 +119,7 @@ float GetMaxF(float a, float b)
 }
 
 // ®”‚ğ”ÍˆÍ“à‚Éû‚ß‚é
-float Clamp(int x, int min, int max)
+int GetClamp(int x, int min, int max)
 {
 	return GetMin(GetMax(x, min), max);
 }

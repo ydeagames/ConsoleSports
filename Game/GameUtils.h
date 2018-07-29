@@ -49,7 +49,7 @@ int GetMax(int a, int b);
 float GetMaxF(float a, float b);
 
 // ®”‚ğ”ÍˆÍ“à‚Éû‚ß‚é
-float Clamp(int x, int min, int max);
+int GetClamp(int x, int min, int max);
 
 // ¬”‚ğ”ÍˆÍ“à‚Éû‚ß‚é
 float ClampF(float x, float min, float max);
