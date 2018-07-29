@@ -1,9 +1,21 @@
 #pragma once
 #include "BufferedConsole.h"
 
-SHORT ConsoleX(float world_x);
+float ConsoleXF(float world_x, float size = 1);
 
-SHORT ConsoleY(float world_y);
+float ConsoleYF(float world_y, float size = 1);
+
+SHORT ConsoleX(float world_x, float size = 1);
+
+SHORT ConsoleY(float world_y, float size = 1);
+
+float WorldXF(float screen_x, float size = 1);
+
+float WorldYF(float screen_y, float size = 1);
+
+float WorldX(SHORT screen_x, float size = 1);
+
+float WorldY(SHORT screen_y, float size = 1);
 
 void DrawString(float x, float y, const char* String, ATTR Color = DEFAULT_ATTR);
 

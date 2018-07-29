@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClCompile Include="Game\BufferedConsole.cpp" />
     <ClCompile Include="Game\Console.cpp" />
+    <ClCompile Include="Game\CXFont.cpp" />
     <ClCompile Include="Game\CXLib.cpp" />
     <ClCompile Include="Game\GameController.cpp" />
     <ClCompile Include="Game\GameControllers.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\BufferedConsole.h" />
     <ClInclude Include="Game\Console.h" />
+    <ClInclude Include="Game\CXFont.h" />
     <ClInclude Include="Game\CXLib.h" />
     <ClInclude Include="Game\GameController.h" />
     <ClInclude Include="Game\GameControllers.h" />
