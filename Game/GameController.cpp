@@ -10,11 +10,6 @@ void GameController_Player_UpdateControl(GameController* ctrl);
 void GameController_Bot_Update(GameController* ctrl);
 void GameController_Bot_UpdateControl(GameController* ctrl);
 
-inline float abs(float a)
-{
-	return a > 0 ? a : -a;
-}
-
 // 関数の定義 ==============================================================
 
 // <<コントローラー>> --------------------------------------------------
@@ -183,7 +178,7 @@ void GameController_Bot_UpdateControl(GameController* ctrl)
 	ctrl->object->vel.y = 0.f;
 
 	// 自分向きかつしきい値より近かったら動く
-	if (k * (ctrl->scene->ball.vel.x) < 0 && abs(ctrl->scene->ball.pos.x - ctrl->object->pos.x) < padding)
+	if (k * (ctrl->scene->ball.vel.x) < 0 && GetAbsF(ctrl->scene->ball.pos.x - ctrl->object->pos.x) < padding)
 	{
 		// Botがパドルを操作
 		float pos_y = ctrl->target_pos.y;

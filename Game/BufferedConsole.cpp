@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "Console.h"
+#include "GameUtils.h"
 
 typedef struct {
 	const char* str;
@@ -26,7 +27,6 @@ static PIXEL buffer2[SCREEN_HEIGHT*SCREEN_WIDTH];
 
 static COORD last_coord;
 static ATTR last_attributes;
-//static BOOL swap_flag;
 
 int debug_screen_width = SCREEN_WIDTH;
 int debug_screen_height = SCREEN_HEIGHT;
@@ -52,22 +52,16 @@ void BufferedConsole_Initialize(void)
 
 	last_coord = { 0, 0 };
 	last_attributes = DEFAULT_ATTR;
-	//swap_flag = FALSE;
 }
-
-//static void SwapScreen(void)
-//{
-//	swap_flag = !swap_flag;
-//}
 
 static PPIXEL GetScreen(void)
 {
-	return /*swap_flag ? */buffer1/* : buffer2*/;
+	return buffer1;
 }
 
 static PPIXEL GetOffScreen(void)
 {
-	return /*swap_flag ? */buffer2/* : buffer1*/;
+	return buffer2;
 }
 
 static PPIXEL GetPixel(const PPIXEL screen, COORD coord)
@@ -97,7 +91,7 @@ void Print(COORD coord, ATTR attributes, const char* format)
 	{
 		PPIXEL screen = GetOffScreen();
 
-		SHORT negative = MAX(0, -coord.X);
+		SHORT negative = GetMax(0, -coord.X);
 
 		SHORT iy;
 		for (iy = coord.Y; iy < SCREEN_HEIGHT; iy++)
@@ -119,7 +113,7 @@ void Print(COORD coord, ATTR attributes, const char* format)
 					SHORT ix = coord.X + neg;
 					SHORT width = (iy >= SCREEN_BOTTOM - 1) ? SCREEN_WIDTH - 1 : SCREEN_WIDTH;
 					if (ix < width)
-						*GetPixel(screen, { ix, iy }) = { {format + neg, MIN(size - neg, width - ix) }, attributes };
+						*GetPixel(screen, { ix, iy }) = { {format + neg, (SHORT)GetMin(size - neg, width - ix) }, attributes };
 				}
 			}
 
@@ -181,9 +175,7 @@ void BufferedConsole_Flush(void)
 
 			FlushPixel(coord, pixel_before, pixel_after);
 
-			ix += MAX(1, pixel_after->str.size);
+			ix += GetMax(1, pixel_after->str.size);
 		}
 	}
-
-	//SwapScreen();
 }

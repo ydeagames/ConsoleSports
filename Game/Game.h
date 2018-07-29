@@ -12,13 +12,6 @@ typedef int		BOOL;																						// 真偽値
 // NULL
 #define NULL	0																							// NULL
 
-// <ユーティリティ> ----------------------------------------------------
-
-																											// 最大値、最小値、クランプ
-#define MAX(a, b)	(a > b ? a : b)																			// 最大値
-#define MIN(a, b)	(a < b ? a : b)																			// 最小値
-#define CLAMP(x, min, max)	(MIN(MAX(x, min), max))															// 範囲内に収める
-
 // <システム> ----------------------------------------------------------
 
 #define GAME_TITLE "Sample Game"																			// ゲームタイトル

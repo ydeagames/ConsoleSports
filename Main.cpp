@@ -18,6 +18,7 @@
 #include "Game\BufferedConsole.h"
 #include "Game\InputManager.h"
 #include "Game\SpeedTest.h"
+#include "Game\GameUtils.h"
 
 
 
@@ -34,7 +35,7 @@ float delta_seconds;
 static int ProcessMessage(void)
 {
 	clock_t now = clock();
-	delta_seconds = MIN(60, now - last_clock) / 1000.f;
+	delta_seconds = GetMin(60, now - last_clock) / 1000.f;
 
 	UpdateInputManager();
 
