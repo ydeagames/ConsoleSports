@@ -90,6 +90,12 @@ float GameObject_GetX(const GameObject* obj, ObjectSide side, float margin = 0.f
 // <オブジェクトY位置ゲット>
 float GameObject_GetY(const GameObject* obj, ObjectSide side, float margin = 0.f);
 
+// <オブジェクトの1フレーム速度X>
+float GameObject_GetDeltaVelX(const GameObject* obj);
+
+// <オブジェクトの1フレーム速度Y>
+float GameObject_GetDeltaVelY(const GameObject* obj);
+
 // <オブジェクト当たり判定>
 BOOL GameObject_IsHit(const GameObject* obj1, const GameObject* obj2);
 

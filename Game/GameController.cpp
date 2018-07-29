@@ -51,6 +51,9 @@ float GameController_GetTargetY(GameObject* field, GameObject* ball, GameObject*
 	float target_pos_y;
 	// 自パドルから放つボールの向き (1: 右向き, -1: 左向き)
 	int k = (paddle_myself->pos.x < paddle_enemy->pos.x) ? 1 : -1;
+	// ボールのフレーム速度
+	float ball_vel_x = GameObject_GetDeltaVelX(ball);
+	float ball_vel_y = GameObject_GetDeltaVelY(ball);
 
 	// ボール、パドルサイズを考慮した敵パドル、自パドルのX座標
 	{
@@ -62,7 +65,7 @@ float GameController_GetTargetY(GameObject* field, GameObject* ball, GameObject*
 		// ボールから何pxで自パドルに到着するのかを算出
 		{
 			length_x = 0;
-			if (k*ball->vel.x > 0)
+			if (k*ball_vel_x > 0)
 			{
 				// ボールが右に進んでいるとき 自分→敵→自分
 				// ボール～敵までの距離 (行き)
@@ -80,7 +83,7 @@ float GameController_GetTargetY(GameObject* field, GameObject* ball, GameObject*
 
 		// 跳ね返りを無視したとき、自パドルに到着時ボールのY座標
 		{
-			length_y = length_x / ball->vel.x * ball->vel.y;
+			length_y = length_x / ball_vel_x * ball_vel_y;
 			if (length_y < 0)
 				length_y *= -1; // 絶対値
 		}
@@ -97,7 +100,7 @@ float GameController_GetTargetY(GameObject* field, GameObject* ball, GameObject*
 	// ボールのY座標
 	{
 		ball_base_y = ball->pos.y - screen_top_y;
-		if (ball->vel.y < 0)
+		if (ball_vel_y < 0)
 			ball_base_y *= -1; // 速度が上向きのとき、上にターゲットが存在する
 	}
 
@@ -170,15 +173,18 @@ void GameController_Bot_Update(GameController* ctrl)
 // Botがパドルを操作
 void GameController_Bot_UpdateControl(GameController* ctrl)
 {
+	// ボールのフレーム速度
+	float ball_vel_x = GameObject_GetDeltaVelX(&ctrl->scene->ball);
+
 	// Botが動き始めるしきい値
-	float padding = 40 * BALL_VEL_X_MIN / PADDLE_VEL;
+	float padding = 35 * BALL_VEL_X_MIN / PADDLE_VEL;
 
 	int k = (ctrl->object->pos.x < ctrl->enemy->pos.x) ? 1 : -1;
 
 	ctrl->object->vel.y = 0.f;
 
 	// 自分向きかつしきい値より近かったら動く
-	if (k * (ctrl->scene->ball.vel.x) < 0 && GetAbsF(ctrl->scene->ball.pos.x - ctrl->object->pos.x) < padding)
+	if (k * (ball_vel_x) < 0 && GetAbsF(ctrl->scene->ball.pos.x - ctrl->object->pos.x) < padding)
 	{
 		// Botがパドルを操作
 		float pos_y = ctrl->target_pos.y;

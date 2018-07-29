@@ -44,8 +44,8 @@ BOOL GameObject_IsAlive(const GameObject* obj)
 // <オブジェクト座標更新>
 void GameObject_UpdatePosition(GameObject* obj)
 {
-	obj->pos.x += obj->vel.x * (delta_seconds / 17.f);
-	obj->pos.y += obj->vel.y * (delta_seconds / 17.f);
+	obj->pos.x += GameObject_GetDeltaVelX(obj);
+	obj->pos.y += GameObject_GetDeltaVelY(obj);
 }
 
 // <オブジェクトXオフセット>
@@ -90,6 +90,18 @@ float GameObject_GetX(const GameObject* obj, ObjectSide side, float padding)
 float GameObject_GetY(const GameObject* obj, ObjectSide side, float padding)
 {
 	return GameObject_OffsetY(obj, side, obj->pos.y, padding);
+}
+
+// <オブジェクトの1フレーム速度X>
+float GameObject_GetDeltaVelX(const GameObject* obj)
+{
+	return obj->vel.x * (delta_seconds / 17.f);
+}
+
+// <オブジェクトの1フレーム速度Y>
+float GameObject_GetDeltaVelY(const GameObject* obj)
+{
+	return obj->vel.y * (delta_seconds / 17.f);
 }
 
 // <矩形オブジェクト×矩形オブジェクト当たり判定>
