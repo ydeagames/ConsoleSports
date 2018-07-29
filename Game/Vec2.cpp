@@ -2,6 +2,7 @@
 #include "Game.h"
 #include <math.h>
 #include "GameUtils.h"
+#include "CXLib.h"
 
 // 定数の定義 ==============================================================
 
@@ -97,7 +98,7 @@ void Vec2_Decompose(const Vec2* vec, const Vec2* angle, Vec2* vec_a, Vec2* vec_b
 	float vec_a_length = vec_length * cosf(diff_rota);
 	float vec_b_length = vec_length * sinf(diff_rota);
 	float vec_a_rota = angle_rota;
-	float vec_b_rota = angle_rota + (float)M_PI_2;
+	float vec_b_rota = angle_rota + (float)CX_PI_F / 2;
 
 	*vec_a = Vec2_Create(vec_a_length * cosf(vec_a_rota), vec_a_length * sinf(vec_a_rota));
 	*vec_b = Vec2_Create(vec_b_length * cosf(vec_b_rota), vec_b_length * sinf(vec_b_rota));
@@ -128,13 +129,13 @@ Vec2 Vec2_Negate(const Vec2* vec)
 }
 
 // <ベクトルを描画>
-void Vec2_Render(const Vec2* vec, const Vec2* base, unsigned int color, float Thickness)
+void Vec2_Render(const Vec2* vec, const Vec2* base, ATTR color, float Thickness)
 {
 	float arrow_length = 10 + Thickness * Vec2_Length(vec)*.125f;
 	float arrow_rota = Vec2_Angle(vec);
 	float arrow_rota1 = arrow_rota + ToRadians(-150);
 	float arrow_rota2 = arrow_rota + ToRadians(150);
-	DrawLineAA(base->x, base->y, base->x + vec->x, base->y + vec->y, color, Thickness);
-	DrawLineAA(base->x + vec->x, base->y + vec->y, base->x + vec->x + (arrow_length * cosf(arrow_rota1)), base->y + vec->y + (arrow_length * sinf(arrow_rota1)), color, Thickness);
-	DrawLineAA(base->x + vec->x, base->y + vec->y, base->x + vec->x + (arrow_length * cosf(arrow_rota2)), base->y + vec->y + (arrow_length * sinf(arrow_rota2)), color, Thickness);
+	DrawLine(base->x, base->y, base->x + vec->x, base->y + vec->y, color);
+	DrawLine(base->x + vec->x, base->y + vec->y, base->x + vec->x + (arrow_length * cosf(arrow_rota1)), base->y + vec->y + (arrow_length * sinf(arrow_rota1)), color);
+	DrawLine(base->x + vec->x, base->y + vec->y, base->x + vec->x + (arrow_length * cosf(arrow_rota2)), base->y + vec->y + (arrow_length * sinf(arrow_rota2)), color);
 }

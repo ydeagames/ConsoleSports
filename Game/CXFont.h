@@ -11,5 +11,14 @@ typedef struct {
 	float size;
 } CXFont;
 
+// フォントハンドルを作成する
+CXFont CreateFontToHandle(CXFontType Font, int Size);
+
+// 文字列描画関数
+void DrawString(float x, float y, const char* String, ATTR Color = DEFAULT_ATTR);
+
+// フォントハンドルを使用した文字列の描画幅(ワールド座標)を取得する
+float GetDrawStringWidthToHandle(const char* String, const CXFont* FontHandle);
+
 // フォントハンドルを使用して文字列を描画する
 void DrawStringToHandle(float x, float y, const char* String, ATTR Color, const CXFont* FontHandle, const char* Str = " ");

@@ -33,7 +33,7 @@ static BOOL GameObject_IsHitBox(GameObject* obj1, GameObject* obj2);
 // <オブジェクト作成>
 GameObject GameObject_Create(Vec2 pos, Vec2 vel, Vec2 size)
 {
-	return{ pos, vel, size, SHAPE_BOX, CONNECTION_NONE, CreateATTR(COLOR_BLACK, COLOR_WHITE), TRUE, 1, 0, GameTimer_Create() };
+	return{ pos, vel, size, SHAPE_BOX, CreateATTR(COLOR_BLACK, COLOR_WHITE), CONNECTION_NONE, TRUE, 1, 0 };
 }
 
 // <オブジェクト削除>
@@ -226,9 +226,9 @@ void GameObject_Render(const GameObject* obj, const Vec2* translate)
 	case SHAPE_BOX:
 		// 矩形描画
 		if (DEBUG_HITBOX)
-			DrawBoxAA(box_xl, box_yt, box_xr, box_yb, obj->sprite.color, FALSE, .5f);
+			DrawBox(box_xl, box_yt, box_xr, box_yb, obj->color, FALSE);
 		else
-			DrawBoxAA(box_xl, box_yt, box_xr, box_yb, obj->sprite.color, TRUE);
+			DrawBox(box_xl, box_yt, box_xr, box_yb, obj->color, TRUE);
 		break;
 	case SHAPE_CIRCLE:
 	{
@@ -236,11 +236,11 @@ void GameObject_Render(const GameObject* obj, const Vec2* translate)
 		// 円
 		if (DEBUG_HITBOX)
 		{
-			DrawCircleAA(box_xc, box_ym, r1, 120, obj->sprite.color, FALSE, .5f);
-			DrawBoxAA(box_xl, box_yt, box_xr, box_yb, obj->sprite.color, FALSE, .5f);
+			DrawCircle(box_xc, box_ym, r1, obj->color, FALSE);
+			DrawBox(box_xl, box_yt, box_xr, box_yb, obj->color, FALSE);
 		}
 		else
-			DrawCircleAA(box_xc, box_ym, r1, 120, obj->sprite.color, TRUE);
+			DrawCircle(box_xc, box_ym, r1, obj->color, TRUE);
 		break;
 	}
 	}

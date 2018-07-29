@@ -153,7 +153,6 @@
     <ClCompile Include="Game\GameObjects.cpp" />
     <ClCompile Include="Game\GameScene.cpp" />
     <ClCompile Include="Game\GameScore.cpp" />
-    <ClCompile Include="Game\GameTimer.cpp" />
     <ClCompile Include="Game\GameUtils.cpp" />
     <ClCompile Include="Game\InputManager.cpp" />
     <ClCompile Include="Game\SpeedTest.cpp" />
@@ -173,7 +172,6 @@
     <ClInclude Include="Game\GameObjects.h" />
     <ClInclude Include="Game\GameScene.h" />
     <ClInclude Include="Game\GameScore.h" />
-    <ClInclude Include="Game\GameTimer.h" />
     <ClInclude Include="Game\GameUtils.h" />
     <ClInclude Include="Game\InputManager.h" />
     <ClInclude Include="Game\SpeedTest.h" />

@@ -10,11 +10,12 @@
 
 // ヘッダファイルの読み込み ================================================
 #include "GameMain.h"
+#include "Game.h"
 #include "GameObject.h"
 #include "GameObjects.h"
 #include "GameControllers.h"
 #include "GameScore.h"
-#include "GameScene.h"
+#include "InputManager.h"
 
 
 // 定数の定義 ==============================================================
@@ -33,6 +34,9 @@ GameScene g_scene;
 
 // <コントローラー> ----------------------------------------------------
 GameControllers g_controllers;
+
+// <フォント> ----------------------------------------------------------
+CXFont g_font_pong;
 
 
 // 関数の宣言 ==============================================================
@@ -83,8 +87,11 @@ void InitializeGame(void)
 	g_scene.paddle2 = GameObject_Paddle_Create();
 	g_scene.paddle2.pos.x = GameObject_OffsetX(&g_scene.paddle2, RIGHT, GameObject_GetX(&g_scene.field, RIGHT), -64);
 	GameObject_Paddle_SetPosYDefault(&g_scene.paddle2, &g_scene.field);
-	g_controllers.paddle2 = GameController_Player_Create(&g_scene.paddle2, &g_scene, &g_scene.paddle1, PAD_INPUT_UP, PAD_INPUT_DOWN);
+	g_controllers.paddle2 = GameController_Player_Create(&g_scene.paddle2, &g_scene, &g_scene.paddle1, KEY_UP, KEY_DOWN);
 	//g_controllers.paddle2 = GameController_Bot_Create(&g_scene.paddle2, &g_scene, &g_scene.paddle1);
+
+	// フォント
+	g_font_pong = CreateFontToHandle(CXFONT_PONG, 14);
 
 	// 得点
 	g_scene.score = GameScore_Create();
@@ -123,7 +130,7 @@ void UpdateGameSceneDemo(void)
 	// 待機&初期化
 	{
 		// 入力されたら
-		if (IsButtonDown(PAD_INPUT_10) && GameMenu_OnPressed(&g_menu))
+		if (IsKeyDown(KEY_SPACE))
 		{
 			// 点数リセット
 			GameScore_Clear(&g_scene.score);
@@ -153,9 +160,6 @@ void UpdateGameSceneDemo(void)
 		g_scene.ball.vel.y *= -1;
 	if (GameObject_Field_CollisionHorizontal(&g_scene.field, &g_scene.ball, CONNECTION_BARRIER, EDGESIDE_INNER))
 		g_scene.ball.vel.x *= -1;
-
-	// メニュー更新
-	GameMenu_Update(&g_menu);
 }
 
 // <ゲームの更新処理:シーン:サーブ> ------------------------------------
@@ -219,18 +223,17 @@ void UpdateGameScenePlay(void)
 	if (GameObject_Field_CollisionVertical(&g_scene.field, &g_scene.ball, CONNECTION_BARRIER, EDGESIDE_INNER))
 	{
 		g_scene.ball.vel.y *= -1;
-		//PlaySoundMem(g_resources.sound_se02, DX_PLAYTYPE_BACK);
 	}
 	{
 		ObjectSide side = GameObject_Field_CollisionHorizontal(&g_scene.field, &g_scene.ball, CONNECTION_NONE, EDGESIDE_OUTER);
 		if (side)
 		{
 			UpdateGameScore(side);
-			//PlaySoundMem(g_resources.sound_se03, DX_PLAYTYPE_BACK);
 		}
 	}
-	if (GameObject_Paddle_CollisionBall(&g_scene.paddle1, &g_scene.ball) || GameObject_Paddle_CollisionBall(&g_scene.paddle2, &g_scene.ball))
-		;// PlaySoundMem(g_resources.sound_se01, DX_PLAYTYPE_BACK);
+	GameObject_Paddle_CollisionBall(&g_scene.paddle1, &g_scene.ball);
+	GameObject_Paddle_CollisionBall(&g_scene.paddle2, &g_scene.ball);
+
 	GameObject_Field_CollisionVertical(&g_scene.field, &g_scene.paddle1, CONNECTION_BARRIER, EDGESIDE_INNER);
 	GameObject_Field_CollisionVertical(&g_scene.field, &g_scene.paddle2, CONNECTION_BARRIER, EDGESIDE_INNER);
 }
@@ -291,9 +294,11 @@ void RenderGameSceneDemo(void)
 	// ボール描画
 	GameObject_Render(&g_scene.ball);
 	// メニュー描画
-	GameMenu_Render(&g_menu);
+	{
+
+	}
 	// スコア描画
-	GameScore_Render(&g_scene.score, &g_scene.field, g_resources.font_pong);
+	GameScore_Render(&g_scene.score, &g_scene.field, g_font_pong);
 }
 
 // <ゲームの描画処理:シーン:サーブ> -------------------------------------------
@@ -303,7 +308,7 @@ void RenderGameSceneServe(void)
 	// フィールド描画
 	GameObject_Field_Render(&g_scene.field);
 	// スコア描画
-	GameScore_Render(&g_scene.score, &g_scene.field, g_resources.font_pong);
+	GameScore_Render(&g_scene.score, &g_scene.field, g_font_pong);
 	// パドル描画
 	GameObject_Render(&g_scene.paddle1);
 	GameObject_Render(&g_scene.paddle2);
@@ -318,7 +323,7 @@ void RenderGameScenePlay(void)
 	// フィールド描画
 	GameObject_Field_Render(&g_scene.field);
 	// スコア描画
-	GameScore_Render(&g_scene.score, &g_scene.field, g_resources.font_pong);
+	GameScore_Render(&g_scene.score, &g_scene.field, g_font_pong);
 	// ガイド描画
 	if (g_scene.score.score2 - g_scene.score.score1 >= SCORE_TO_GUID)
 		GameController_RenderGuide(&g_controllers.paddle1);

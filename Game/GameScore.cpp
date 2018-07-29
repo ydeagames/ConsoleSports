@@ -1,4 +1,5 @@
 #include "GameScore.h"
+#include <stdio.h>
 
 // 関数の定義 ==============================================================
 
@@ -41,10 +42,14 @@ BOOL GameScore_IsFinished(GameScore* score)
 void GameScore_Render(GameScore* score, GameObject* field, CXFont font)
 {
 	// スコア描画
+	char str[10] = {};
 
 	// フォントを使用した文字の幅を取得
-	int width_score1 = GetDrawFormatStringWidthToHandle(font, "%2d", score->score1);
+	float width_score1;
+	snprintf(str, 10, "%2d", score->score1);
+	width_score1 = GetDrawStringWidthToHandle(str, &font);
 
-	DrawFormatStringToHandle((int)(field->pos.x - 100 - width_score1), (int)(GameObject_GetY(field, TOP, 10)), COLOR_WHITE, font, "%2d", score->score1);
-	DrawFormatStringToHandle((int)(field->pos.x + 100), (int)(GameObject_GetY(field, TOP, 10)), COLOR_WHITE, font, "%2d", score->score2);
+	DrawStringToHandle(field->pos.x - 100 - width_score1, GameObject_GetY(field, TOP, 10), str, ATTR_WHITE, &font);
+	snprintf(str, 10, "%2d", score->score2);
+	DrawStringToHandle(field->pos.x + 100, GameObject_GetY(field, TOP, 10), str, ATTR_WHITE, &font);
 }

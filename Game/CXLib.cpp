@@ -46,12 +46,6 @@ float WorldY(SHORT screen_y, float size)
 	return WorldYF((float)screen_y, size);
 }
 
-// •¶š—ñ•`‰æŠÖ”
-void DrawString(float x, float y, const char* String, ATTR Color)
-{
-	Print({ ConsoleX(x), ConsoleY(y) }, Color, String);
-}
-
 // }Œ`•`‰æŠÖ”
 void DrawBox(float x1, float y1, float x2, float y2, ATTR Color, int FillFlag, const char* Str)
 {
@@ -95,6 +89,12 @@ void DrawOval(float x, float y, float rx, float ry, ATTR Color, int FillFlag, co
 				Print({ cx + ix, cy + iy }, Color, Str);
 		}
 	}
+}
+
+// }Œ`•`‰æŠÖ”
+void DrawCircle(float x, float y, float r, ATTR Color, int FillFlag, const char* Str)
+{
+	DrawOval(x, y, r, r, Color, FillFlag, Str);
 }
 
 // }Œ`•`‰æŠÖ”

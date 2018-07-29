@@ -1,6 +1,7 @@
 #include "GameController.h"
 #include "GameObjects.h"
 #include "GameUtils.h"
+#include "InputManager.h"
 
 // ŠÖ”‚ÌéŒ¾ ==============================================================
 
@@ -8,8 +9,6 @@ void GameController_Player_Update(GameController* ctrl);
 void GameController_Player_UpdateControl(GameController* ctrl);
 void GameController_Bot_Update(GameController* ctrl);
 void GameController_Bot_UpdateControl(GameController* ctrl);
-void GameController_Network_Update(GameController* ctrl);
-void GameController_Network_UpdateControl(GameController* ctrl);
 
 inline float abs(float a)
 {
@@ -155,9 +154,9 @@ void GameController_Player_Update(GameController* ctrl)
 void GameController_Player_UpdateControl(GameController* ctrl)
 {
 	ctrl->object->vel.y = 0.f;
-	if (IsButtonDown(ctrl->player_key_up))
+	if (IsKeyDown(ctrl->player_key_up))
 		ctrl->object->vel.y += -PADDLE_VEL;
-	if (IsButtonDown(ctrl->player_key_down))
+	if (IsKeyDown(ctrl->player_key_down))
 		ctrl->object->vel.y += PADDLE_VEL;
 }
 
@@ -208,6 +207,6 @@ void GameController_RenderGuide(GameController* ctrl)
 {
 	GameObject target = *ctrl->object;
 	target.pos = ctrl->target_pos;
-	target.sprite.color = 0x222222;
+	target.color = CreateATTR(COLOR_BLACK, COLOR_GRAY);
 	GameObject_Render(&target);
 }

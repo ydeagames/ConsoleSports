@@ -62,9 +62,68 @@ static Sprite fonts[NUM_FONTS] = {
 	{ 'e', 49, 8, 3, 7 }
 };
 
+// フォントハンドルを作成する
+CXFont CreateFontToHandle(CXFontType Font, int Size)
+{
+	return { Font, (float)Size };
+}
+
+
 static char GetPixel(int x, int y)
 {
 	return texture_atlas[y][x];
+}
+
+// 文字列描画関数
+void DrawString(float x, float y, const char* String, ATTR Color)
+{
+	Print({ ConsoleX(x), ConsoleY(y) }, Color, String);
+}
+
+// フォントハンドルを使用した文字列の描画幅(ワールド座標)を取得する
+float GetDrawStringWidthToHandle(const char* String, const CXFont* FontHandle)
+{
+	switch (FontHandle->type)
+	{
+	default:
+	case CXFONT_DEFAULT:
+		return strlen(String);
+		break;
+	case CXFONT_PONG:
+		float size = 7 / FontHandle->size;
+		float font_w = 0;
+		float font_x = 0;
+		const char* c;
+		for (c = String; *c != '\0'; c++)
+		{
+			Sprite* sprite = NULL;
+
+			if (*c == '\n')
+			{
+				font_w = GetMaxF(font_w, font_x);
+				font_x = 0;
+				continue;
+			}
+
+			{
+				int i;
+				for (i = 0; i < NUM_FONTS; i++)
+				{
+					if (fonts[i].name == *c)
+					{
+						sprite = &fonts[i];
+						break;
+					}
+				}
+			}
+			if (sprite != NULL)
+			{
+				font_x += sprite->w + FONT_SPAN_WIDTH;
+			}
+		}
+		return font_w;
+		break;
+	}
 }
 
 // フォントハンドルを使用して文字列を描画する
@@ -118,9 +177,9 @@ void DrawStringToHandle(float x, float y, const char* String, ATTR Color, const 
 							Print({ ConsoleX(font_x / size + x) + ix, ConsoleY(font_y / size + y) + iy }, Color, Str);
 					}
 				}
+				font_x += sprite->w + FONT_SPAN_WIDTH;
+				font_h = GetMaxF(font_y, WorldY(sprite->h));
 			}
-			font_x += sprite->w + FONT_SPAN_WIDTH;
-			font_h = GetMaxF(font_y, WorldY(sprite->h));
 		}
 		break;
 	}
