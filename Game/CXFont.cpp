@@ -217,7 +217,7 @@ void DrawStringToHandle(float x, float y, const char* String, ATTR Color, const 
 			if (sprite != NULL)
 			{
 				// •¶š‚Ì•
-				int str_len = GetMax(1, strlen(Str));
+				int str_len = GetMax(1, (int)strlen(Str));
 
 				// Yƒ‹[ƒv
 				SHORT ix, iy;

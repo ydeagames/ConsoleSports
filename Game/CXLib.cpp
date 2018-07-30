@@ -55,7 +55,7 @@ void DrawBox(float x1, float y1, float x2, float y2, ATTR Color, int FillFlag, c
 	SHORT cx2 = ConsoleX(x2);
 	SHORT cy2 = ConsoleY(y2);
 
-	int str_len = GetMax(1, strlen(Str));
+	int str_len = GetMax(1, (int)strlen(Str));
 
 	SHORT ix, iy;
 	for (iy = cy1; iy <= cy2; iy++)
@@ -78,7 +78,7 @@ void DrawOval(float x, float y, float rx, float ry, ATTR Color, int FillFlag, co
 	float crxf = ConsoleXF(rx);
 	float cryf = ConsoleYF(ry);
 
-	int str_len = GetMax(1, strlen(Str));
+	int str_len = GetMax(1, (int)strlen(Str));
 
 	SHORT ix, iy;
 	for (iy = -cry; iy <= cry; iy++)
