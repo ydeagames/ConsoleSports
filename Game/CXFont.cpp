@@ -98,7 +98,7 @@ static char GetPixel(int x, int y)
 // 文字列描画関数
 void DrawString(float x, float y, const char* String, ATTR Color)
 {
-	Print({ ConsoleX(x), ConsoleY(y) }, Color, String);
+	Print({ WorldToConsoleX(x), WorldToConsoleY(y) }, Color, String);
 }
 
 // フォントハンドルを使用した文字列の描画幅(ワールド座標)を取得する
@@ -109,7 +109,7 @@ float GetDrawStringWidthToHandle(const char* String, const CXFont* FontHandle)
 	default:
 	case CXFONT_DEFAULT:
 		// 文字数=幅
-		return WorldX((SHORT)strlen(String));
+		return ConsoleToWorldX((SHORT)strlen(String));
 		break;
 	case CXFONT_PONG:
 		// サイズの比
@@ -221,20 +221,20 @@ void DrawStringToHandle(float x, float y, const char* String, ATTR Color, const 
 
 				// Yループ
 				SHORT ix, iy;
-				for (iy = 0; WorldYF(iy) < sprite->h / size; iy += 1)
+				for (iy = 0; ConsoleToWorldYF(iy) < sprite->h / size; iy += 1)
 				{
 					// Xループ
-					for (ix = 0; WorldXF(ix) < sprite->w / size; ix += str_len)
+					for (ix = 0; ConsoleToWorldXF(ix) < sprite->w / size; ix += str_len)
 					{
 						// ピクセルが1だったら描画
-						if (GetPixel(sprite->x + (int)(WorldX(ix) * size), sprite->y + (int)(WorldY(iy) * size)) == '1')
-							Print({ ConsoleX(font_x / size + x) + ix, ConsoleY(font_y / size + y) + iy }, Color, Str);
+						if (GetPixel(sprite->x + (int)(ConsoleToWorldX(ix) * size), sprite->y + (int)(ConsoleToWorldY(iy) * size)) == '1')
+							Print({ WorldToConsoleX(font_x / size + x) + ix, WorldToConsoleY(font_y / size + y) + iy }, Color, Str);
 					}
 				}
 				// フォント左上のX座標を進める
 				font_x += sprite->w + FONT_SPAN_WIDTH;
 				// フォントの最大高さを更新
-				font_h = GetMaxF(font_y, WorldY(sprite->h));
+				font_h = GetMaxF(font_y, ConsoleToWorldY(sprite->h));
 			}
 		}
 		break;
