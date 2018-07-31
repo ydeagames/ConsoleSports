@@ -6,6 +6,18 @@
 // キー更新
 void UpdateInputManager(void);
 
+// 生キーが押されているか
+BOOL IsRawKeyDown(int key);
+
+// 生キーが離されているか
+BOOL IsRawKeyUp(int key);
+
+// 生キーを押した直後か
+BOOL IsRawKeyPressed(int key);
+
+// 生キーを離した直後か
+BOOL IsRawKeyReleased(int key);
+
 // キーが押されているか
 BOOL IsKeyDown(int key);
 

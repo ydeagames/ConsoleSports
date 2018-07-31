@@ -151,13 +151,13 @@ void UpdateGame(void)
 void UpdateGameSceneDemo(void)
 {
 	// Escを押されたら終了
-	if (IsKeyDown(KEY_ESC))
+	if (IsRawKeyDown(KEY_ESC))
 		ExitGame();
 
 	// 待機&初期化
 	{
 		// 入力されたら
-		if (IsKeyDown(KEY_SPACE))
+		if (IsRawKeyDown(KEY_SPACE))
 		{
 			// 点数リセット
 			GameScore_Clear(&g_scene.score);
@@ -191,13 +191,16 @@ void UpdateGameSceneDemo(void)
 // <ゲームの更新処理:シーン:サーブ> ------------------------------------
 void UpdateGameSceneServe(void)
 {
-	// Escを押されたらポーズ
-	if (IsKeyDown(KEY_ESC))
-		InitializeGamePause();
 	// ポーズ中ならポーズ処理
 	if (g_paused)
 	{
 		UpdateGamePause();
+		return;
+	}
+	// Escを押されたらポーズ
+	if (IsRawKeyDown(KEY_ESC))
+	{
+		InitializeGamePause();
 		return;
 	}
 
@@ -241,13 +244,16 @@ void UpdateGameSceneServe(void)
 // <ゲームの更新処理:シーン:プレイ> ------------------------------------
 void UpdateGameScenePlay(void)
 {
-	// Escを押されたらポーズ
-	if (IsKeyDown(KEY_ESC))
-		InitializeGamePause();
 	// ポーズ中ならポーズ処理
 	if (g_paused)
 	{
 		UpdateGamePause();
+		return;
+	}
+	// Escを押されたらポーズ
+	if (IsRawKeyDown(KEY_ESC))
+	{
+		InitializeGamePause();
 		return;
 	}
 
@@ -286,11 +292,13 @@ void UpdateGameScenePlay(void)
 // <ゲームの更新処理:ポーズ>
 void UpdateGamePause(void)
 {
-	if (IsKeyPressed(KEY_UP))
+	if (IsRawKeyPressed(KEY_UP))
 		g_pause_select = GetLoop(g_pause_select - 1, 3);
-	if (IsKeyPressed(KEY_DOWN))
+	if (IsRawKeyPressed(KEY_DOWN))
 		g_pause_select = GetLoop(g_pause_select + 1, 3);
-	if (IsKeyPressed(KEY_SPACE))
+	if (IsRawKeyPressed(KEY_ESC))
+		g_paused = FALSE;
+	if (IsRawKeyPressed(KEY_SPACE))
 	{
 		switch (g_pause_select)
 		{
@@ -373,7 +381,7 @@ void RenderGameSceneDemo(void)
 	// メニュー描画
 	{
 		float width = GetDrawStringWidthToHandle("Pong Game", &g_font_pong);
-		//DrawBox(GameObject_GetX(&g_scene.field, LEFT, -39), GameObject_GetY(&g_scene.field, CENTER_Y) - 9, GameObject_GetX(&g_scene.field, RIGHT, -38), GameObject_GetY(&g_scene.field, CENTER_Y) + 7, CreateATTR(COLOR_BLACK, COLOR_BLACK), TRUE);
+
 		DrawLine(GameObject_GetX(&g_scene.field, LEFT, -39), GameObject_GetY(&g_scene.field, CENTER_Y) + 5, GameObject_GetX(&g_scene.field, RIGHT, -38), GameObject_GetY(&g_scene.field, CENTER_Y) + 5, CreateATTR(COLOR_BLACK, COLOR_DARK_GREEN));
 		DrawStringToHandle(GameObject_GetX(&g_scene.field, CENTER_X) - width / 2 - 10, GameObject_GetY(&g_scene.field, CENTER_Y) - 7, "Pong Game", CreateATTR(COLOR_BLACK, COLOR_CYAN), &g_font_pong);
 		DrawString(GameObject_GetX(&g_scene.field, CENTER_X) + 20, GameObject_GetY(&g_scene.field, CENTER_Y) + 7, "～レトロな卓球スポーツゲーム～", CreateATTR(COLOR_YELLOW, COLOR_BLACK));
@@ -439,9 +447,18 @@ void RenderGameScenePlay(void)
 // <ゲームの描画処理:ポーズ>
 void RenderGamePause(void)
 {
-	char str[20];
-	snprintf(str, 20, "[ %d ]", g_pause_select);
-	DrawString(2, 2, str, DEFAULT_ATTR);
+	ATTR attr_on = CreateATTR(COLOR_WHITE, COLOR_DARK_GRAY);
+	ATTR attr_off = CreateATTR(COLOR_WHITE, COLOR_BLACK);
+
+	DrawBox(GameObject_GetX(&g_scene.field, LEFT, -39-1), GameObject_GetY(&g_scene.field, CENTER_Y) + 15-1, GameObject_GetX(&g_scene.field, RIGHT, -38+1), GameObject_GetY(&g_scene.field, CENTER_Y) + 27+1, CreateATTR(COLOR_BLACK, COLOR_BLACK), TRUE);
+	DrawBox(GameObject_GetX(&g_scene.field, LEFT, -39), GameObject_GetY(&g_scene.field, CENTER_Y) + 15, GameObject_GetX(&g_scene.field, RIGHT, -38), GameObject_GetY(&g_scene.field, CENTER_Y) + 27, CreateATTR(COLOR_BLACK, COLOR_DARK_MAGENTA), FALSE);
+
+	DrawBox(GameObject_GetX(&g_scene.field, LEFT, -40), GameObject_GetY(&g_scene.field, CENTER_Y) + 20 + g_pause_select*2,
+		GameObject_GetX(&g_scene.field, RIGHT, -39), GameObject_GetY(&g_scene.field, CENTER_Y) + 20 + g_pause_select * 2, attr_on, TRUE);
+	DrawString(GameObject_GetX(&g_scene.field, CENTER_X) - 1, GameObject_GetY(&g_scene.field, CENTER_Y) + 17, "ポーズ", CreateATTR(COLOR_YELLOW, COLOR_BLACK));
+	DrawString(GameObject_GetX(&g_scene.field, CENTER_X) - 2, GameObject_GetY(&g_scene.field, CENTER_Y) + 20, "ゲームに戻る", g_pause_select==0 ? attr_on : attr_off);
+	DrawString(GameObject_GetX(&g_scene.field, CENTER_X) - 3, GameObject_GetY(&g_scene.field, CENTER_Y) + 22, "タイトルに戻る", g_pause_select == 1 ? attr_on : attr_off);
+	DrawString(GameObject_GetX(&g_scene.field, CENTER_X) - 4, GameObject_GetY(&g_scene.field, CENTER_Y) + 24, "ゲームを終了する", g_pause_select == 2 ? attr_on : attr_off);
 }
 
 //----------------------------------------------------------------------

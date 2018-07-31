@@ -8,10 +8,15 @@
 
 // グローバル変数の定義 ====================================================
 
+// 生入力状態
+static int g_raw_input_state;
+// 前回の生入力状態
+static int g_raw_input_state_last;
+
 // 入力状態
 static int g_input_state;
 // 前回の入力状態
-static int s_input_state_last;
+static int g_input_state_last;
 
 // 待機中のキー
 static int g_pending_key;
@@ -24,9 +29,10 @@ static time_t g_pending_last;
 void UpdateInputManager(void)
 {
 	// 最後に入力されたキーを更新
-	s_input_state_last = g_input_state;
+	g_raw_input_state_last = g_raw_input_state;
+	g_input_state_last = g_input_state;
 	// 現在入力されたキーを更新
-	g_input_state = GetKeyInput();
+	g_input_state = g_raw_input_state = GetKeyInput();
 
 	// 入力があったら
 	if (g_input_state != 0)
@@ -41,6 +47,30 @@ void UpdateInputManager(void)
 		if (clock() - g_pending_last < KEY_DURATION)
 			g_input_state = g_pending_key;
 	}
+}
+
+// 生キーが押されているか
+BOOL IsRawKeyDown(int key)
+{
+	return g_raw_input_state == key;
+}
+
+// 生キーが離されているか
+BOOL IsRawKeyUp(int key)
+{
+	return !IsKeyDown(key);
+}
+
+// 生キーを押した直後か
+BOOL IsRawKeyPressed(int key)
+{
+	return (g_raw_input_state_last != key) && (g_raw_input_state == key);
+}
+
+// 生キーを離した直後か
+BOOL IsRawKeyReleased(int key)
+{
+	return (g_raw_input_state_last == key) && (g_raw_input_state != key);
 }
 
 // キーが押されているか
@@ -58,11 +88,11 @@ BOOL IsKeyUp(int key)
 // キーを押した直後か
 BOOL IsKeyPressed(int key)
 {
-	return (s_input_state_last != key) && (g_input_state == key);
+	return (g_input_state_last != key) && (g_input_state == key);
 }
 
 // キーを離した直後か
 BOOL IsKeyReleased(int key)
 {
-	return (s_input_state_last == key) && (g_input_state != key);
+	return (g_input_state_last == key) && (g_input_state != key);
 }
