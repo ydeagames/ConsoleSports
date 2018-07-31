@@ -25,9 +25,9 @@
 // グローバル変数定義 ======================================================
 
 // 最後の時刻
-static clock_t last_clock;
+static struct timespec last_clock;
 // 1フレームの秒
-float delta_seconds;
+float delta_time;
 // 終了リクエスト
 static BOOL exit_request = FALSE;
 
@@ -38,8 +38,10 @@ static BOOL exit_request = FALSE;
 // 1フレーム
 static int ProcessMessage(void)
 {
-	clock_t now = clock();
-	delta_seconds = GetMin(60, now - last_clock) / 1000.f;
+	struct timespec now;
+	timespec_get(&now, TIME_UTC);
+	delta_time = GetMinF(60, ((now.tv_sec - last_clock.tv_sec) + (now.tv_nsec - last_clock.tv_nsec)/1000.f/1000.f/1000.f) * 16);
+	last_clock = now;
 
 	UpdateInputManager();
 

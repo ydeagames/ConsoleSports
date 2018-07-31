@@ -95,13 +95,13 @@ float GameObject_GetY(const GameObject* obj, ObjectSide side, float padding)
 // <オブジェクトの1フレーム速度X>
 float GameObject_GetDeltaVelX(const GameObject* obj)
 {
-	return obj->vel.x * (delta_seconds / 17.f);
+	return obj->vel.x * (delta_time / 17.f);
 }
 
 // <オブジェクトの1フレーム速度Y>
 float GameObject_GetDeltaVelY(const GameObject* obj)
 {
-	return obj->vel.y * (delta_seconds / 17.f);
+	return obj->vel.y * (delta_time / 17.f);
 }
 
 // <矩形オブジェクト×矩形オブジェクト当たり判定>
