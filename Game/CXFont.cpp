@@ -31,8 +31,8 @@ typedef struct
 // 定数の定義 ==============================================================
 
 #define TEXTURE_ATLAS_WIDTH		60		// テクスチャアトラスの幅
-#define TEXTURE_ATLAS_HEIGHT	18		// テクスチャアトラスの高さ
-#define NUM_FONTS				19		// フォントの数
+#define TEXTURE_ATLAS_HEIGHT	27		// テクスチャアトラスの高さ
+#define NUM_FONTS				27		// フォントの数
 #define FONT_SPAN_WIDTH			2.f		// 文字同士の横の空白
 #define FONT_SPAN_HEIGHT		2.f		// 文字同士の縦の空白
 
@@ -57,7 +57,16 @@ static char* texture_atlas[TEXTURE_ATLAS_HEIGHT] = {
 	"1      1111  1  1  1111      11111 111  1  1  1  111        ",
 	"                      1                                     ",
 	"                   1111                                     ",
-	"                   1111                                     "
+	"                   1111                                     ",
+	"                                                            ",
+	"11111 1                1         11  11                     ",
+	"11111 1                1         11 11              1       ",
+	"  1   1111  111  1111  1 11       111   1111  1  1  1       ",
+	"  1   1  1    1  1  1  111         11   1  1  1  1  1       ",
+	"  1   1  1  111  1  1  11          1    1  1  1  1  1       ",
+	"  1   1  1  1 1  1  1  1 1         1    1  1  1  1          ",
+	"  1   1  1  111  1  1  1 11        1    1111  1111  1       ",
+	"                                                    1       "
 };
 
 // フォント・スプライト
@@ -80,13 +89,19 @@ static Sprite fonts[NUM_FONTS] = {
 	{ 'G', 29, 8, 5, 7 },
 	{ 'a', 35, 8, 3, 7 },
 	{ 'm', 40, 8, 7, 7 },
-	{ 'e', 49, 8, 3, 7 }
+	{ 'e', 49, 8, 3, 7 },
+	{ 'T', 0, 19, 5, 7 },
+	{ 'h', 6, 19, 4, 7 },
+	{ 'k', 23, 19, 4, 7 },
+	{ 'Y', 33, 19, 6, 7 },
+	{ 'u', 46, 19, 4, 7 },
+	{ '!', 52, 19, 1, 8 }
 };
 
 // フォントハンドルを作成する
 CXFont CreateFontToHandle(CXFontType Font, int Size)
 {
-	return { Font, (float)Size };
+	return{ Font, (float)Size };
 }
 
 // ピクセルを取得

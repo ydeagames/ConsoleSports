@@ -360,16 +360,18 @@ void RenderGameScenePlay(void)
 void FinalizeGame(void)
 {
 	// 情報取得
-	CXFont font = {CXFONT_DEFAULT, SCREEN_FONT_SIZE};
-	float width = GetDrawStringWidthToHandle("プレイいただきありがとうございました。", &font);
+	CXFont font = { CXFONT_DEFAULT, SCREEN_FONT_SIZE };
+	float widththanks = GetDrawStringWidthToHandle("Thank You!", &g_font_pong);
+	float widthmsg = GetDrawStringWidthToHandle("プレイいただきありがとうございました。", &font);
 	float widthwait = GetDrawStringWidthToHandle("続行するには何かキーを押してください . . .", &font);
 	// 画面をクリア
 	Clear();
 	// 終了画面
-	DrawStringToHandle(WORLD_CENTER_X - width / 2, WORLD_CENTER_Y, "プレイいただきありがとうございました。", DEFAULT_ATTR, &font);
+	DrawStringToHandle(WORLD_CENTER_X - widththanks / 2 - 10, WORLD_CENTER_Y - 10, "Thank You!", CreateATTR(COLOR_BLACK, COLOR_CYAN), &g_font_pong);
+	DrawStringToHandle(WORLD_CENTER_X - widthmsg / 2, WORLD_CENTER_Y + 5, "プレイいただきありがとうございました。", CreateATTR(COLOR_YELLOW, COLOR_BLACK), &font);
 	BufferedConsole_Flush();
 	// 後始末
-	SetTextColor(COLOR_WHITE);
+	SetTextColor(COLOR_DARK_GRAY);
 	SetBackColor(COLOR_BLACK);
 	SetCursorPosition(SCREEN_RIGHT - WorldToConsoleX(widthwait) - 2, SCREEN_BOTTOM - 2);
 }
