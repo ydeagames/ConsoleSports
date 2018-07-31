@@ -359,4 +359,17 @@ void RenderGameScenePlay(void)
 //----------------------------------------------------------------------
 void FinalizeGame(void)
 {
+	// 情報取得
+	CXFont font = {CXFONT_DEFAULT, SCREEN_FONT_SIZE};
+	float width = GetDrawStringWidthToHandle("プレイいただきありがとうございました。", &font);
+	float widthwait = GetDrawStringWidthToHandle("続行するには何かキーを押してください . . .", &font);
+	// 画面をクリア
+	Clear();
+	// 終了画面
+	DrawStringToHandle(WORLD_CENTER_X - width / 2, WORLD_CENTER_Y, "プレイいただきありがとうございました。", DEFAULT_ATTR, &font);
+	BufferedConsole_Flush();
+	// 後始末
+	SetTextColor(COLOR_WHITE);
+	SetBackColor(COLOR_BLACK);
+	SetCursorPosition(SCREEN_RIGHT - WorldToConsoleX(widthwait) - 2, SCREEN_BOTTOM - 2);
 }
