@@ -296,9 +296,9 @@ void RenderGameSceneDemo(void)
 	{
 		float width = GetDrawStringWidthToHandle("Pong Game", &g_font_pong);
 		//DrawBox(GameObject_GetX(&g_scene.field, LEFT, -39), GameObject_GetY(&g_scene.field, CENTER_Y) - 9, GameObject_GetX(&g_scene.field, RIGHT, -38), GameObject_GetY(&g_scene.field, CENTER_Y) + 7, CreateATTR(COLOR_BLACK, COLOR_BLACK), TRUE);
+		DrawLine(GameObject_GetX(&g_scene.field, LEFT, -39), GameObject_GetY(&g_scene.field, CENTER_Y) + 5, GameObject_GetX(&g_scene.field, RIGHT, -38), GameObject_GetY(&g_scene.field, CENTER_Y) + 5, CreateATTR(COLOR_BLACK, COLOR_DARK_GREEN));
 		DrawStringToHandle(GameObject_GetX(&g_scene.field, CENTER_X) - width / 2 - 10, GameObject_GetY(&g_scene.field, CENTER_Y) - 7, "Pong Game", CreateATTR(COLOR_BLACK, COLOR_CYAN), &g_font_pong);
 		DrawString(GameObject_GetX(&g_scene.field, CENTER_X) + 20, GameObject_GetY(&g_scene.field, CENTER_Y) + 7, "～レトロな卓球スポーツゲーム～", CreateATTR(COLOR_YELLOW, COLOR_BLACK));
-		DrawLine(GameObject_GetX(&g_scene.field, LEFT, -39), GameObject_GetY(&g_scene.field, CENTER_Y) + 5, GameObject_GetX(&g_scene.field, RIGHT, -38), GameObject_GetY(&g_scene.field, CENTER_Y) + 5, CreateATTR(COLOR_BLACK, COLOR_DARK_GREEN));
 
 		DrawBox(GameObject_GetX(&g_scene.field, LEFT, -39), GameObject_GetY(&g_scene.field, CENTER_Y) + 14, GameObject_GetX(&g_scene.field, RIGHT, -38), GameObject_GetY(&g_scene.field, CENTER_Y) + 28, CreateATTR(COLOR_BLACK, COLOR_BLACK), TRUE);
 		DrawBox(GameObject_GetX(&g_scene.field, LEFT, -39), GameObject_GetY(&g_scene.field, CENTER_Y) + 14, GameObject_GetX(&g_scene.field, RIGHT, -38), GameObject_GetY(&g_scene.field, CENTER_Y) + 28, CreateATTR(COLOR_BLACK, COLOR_DARK_MAGENTA), FALSE);
