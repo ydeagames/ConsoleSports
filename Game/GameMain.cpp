@@ -11,10 +11,12 @@
 // ヘッダファイルの読み込み ================================================
 #include "GameMain.h"
 #include "Game.h"
+#include <stdio.h>
 #include "GameObject.h"
 #include "GameObjects.h"
 #include "GameControllers.h"
 #include "GameScore.h"
+#include "GameUtils.h"
 #include "InputManager.h"
 
 
@@ -38,6 +40,10 @@ GameControllers g_controllers;
 // <フォント> ----------------------------------------------------------
 CXFont g_font_pong;
 
+// <ポーズ> ------------------------------------------------------------
+BOOL g_paused;
+int g_pause_select;
+
 
 // 関数の宣言 ==============================================================
 
@@ -51,7 +57,14 @@ void RenderGameSceneDemo(void);
 void RenderGameSceneServe(void);
 void RenderGameScenePlay(void);
 
+// <ゲームの更新処理:スコア加算>
 void UpdateGameScore(ObjectSide side);
+// <ゲームの初期化処理:ポーズ>
+void InitializeGamePause(void);
+// <ゲームの更新処理:ポーズ>
+void UpdateGamePause(void);
+// <ゲームの描画処理:ポーズ>
+void RenderGamePause(void);
 
 // 関数の定義 ==============================================================
 
@@ -103,6 +116,13 @@ void InitializeGame(void)
 	g_scene.counter = 0;
 }
 
+// <ゲームの初期化処理:ポーズ>
+void InitializeGamePause(void)
+{
+	g_paused = TRUE;
+	g_pause_select = 0;
+}
+
 
 //----------------------------------------------------------------------
 //! @brief ゲームの更新処理
@@ -130,6 +150,10 @@ void UpdateGame(void)
 // <ゲームの更新処理:シーン:デモ> --------------------------------------
 void UpdateGameSceneDemo(void)
 {
+	// Escを押されたら終了
+	if (IsKeyDown(KEY_ESC))
+		ExitGame();
+
 	// 待機&初期化
 	{
 		// 入力されたら
@@ -167,6 +191,16 @@ void UpdateGameSceneDemo(void)
 // <ゲームの更新処理:シーン:サーブ> ------------------------------------
 void UpdateGameSceneServe(void)
 {
+	// Escを押されたらポーズ
+	if (IsKeyDown(KEY_ESC))
+		InitializeGamePause();
+	// ポーズ中ならポーズ処理
+	if (g_paused)
+	{
+		UpdateGamePause();
+		return;
+	}
+
 	// 待機&初期化
 	g_scene.counter++;
 
@@ -207,6 +241,16 @@ void UpdateGameSceneServe(void)
 // <ゲームの更新処理:シーン:プレイ> ------------------------------------
 void UpdateGameScenePlay(void)
 {
+	// Escを押されたらポーズ
+	if (IsKeyDown(KEY_ESC))
+		InitializeGamePause();
+	// ポーズ中ならポーズ処理
+	if (g_paused)
+	{
+		UpdateGamePause();
+		return;
+	}
+
 	// コントローラー更新
 	GameController_Update(&g_controllers.paddle1);
 	GameController_Update(&g_controllers.paddle2);
@@ -237,6 +281,40 @@ void UpdateGameScenePlay(void)
 
 	GameObject_Field_CollisionVertical(&g_scene.field, &g_scene.paddle1, CONNECTION_BARRIER, EDGESIDE_INNER);
 	GameObject_Field_CollisionVertical(&g_scene.field, &g_scene.paddle2, CONNECTION_BARRIER, EDGESIDE_INNER);
+}
+
+// <ゲームの更新処理:ポーズ>
+void UpdateGamePause(void)
+{
+	if (IsKeyPressed(KEY_UP))
+		g_pause_select = GetLoop(g_pause_select - 1, 3);
+	if (IsKeyPressed(KEY_DOWN))
+		g_pause_select = GetLoop(g_pause_select + 1, 3);
+	if (IsKeyPressed(KEY_SPACE))
+	{
+		switch (g_pause_select)
+		{
+		default:
+		case 0:
+			g_paused = FALSE;
+			break;
+		case 1:
+			g_paused = FALSE;
+			// 終了処理
+			{
+				GameObject_Ball_SetPosXDefault(&g_scene.ball, &g_scene.field);
+				GameObject_Ball_SetVelXDefault(&g_scene.ball);
+				GameObject_Ball_SetVelYDefault(&g_scene.ball);
+
+				// シーンをデモに変更
+				g_scene.game_state = STATE_DEMO;
+			}
+			break;
+		case 2:
+			ExitGame();
+			break;
+		}
+	}
 }
 
 // <ゲームの更新処理:スコア加算>
@@ -328,6 +406,10 @@ void RenderGameSceneServe(void)
 	GameObject_Render(&g_scene.paddle2);
 	// ボール描画
 	GameObject_Render(&g_scene.ball);
+
+	// ポーズ中ならポーズ処理
+	if (g_paused)
+		RenderGamePause();
 }
 
 // <ゲームの描画処理:シーン:プレイ> -------------------------------------------
@@ -348,6 +430,18 @@ void RenderGameScenePlay(void)
 	GameObject_Render(&g_scene.paddle2);
 	// ボール描画
 	GameObject_Render(&g_scene.ball);
+
+	// ポーズ中ならポーズ処理
+	if (g_paused)
+		RenderGamePause();
+}
+
+// <ゲームの描画処理:ポーズ>
+void RenderGamePause(void)
+{
+	char str[20];
+	snprintf(str, 20, "[ %d ]", g_pause_select);
+	DrawString(2, 2, str, DEFAULT_ATTR);
 }
 
 //----------------------------------------------------------------------

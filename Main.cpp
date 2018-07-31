@@ -10,9 +10,9 @@
 
 // ヘッダファイルの読み込み ================================================
 
+#include "Game\Game.h"
 #include <stdio.h>
 #include <time.h>
-#include "Game\Game.h"
 #include "Game\Console.h"
 #include "Game\GameMain.h"
 #include "Game\BufferedConsole.h"
@@ -24,8 +24,12 @@
 
 // グローバル変数定義 ======================================================
 
+// 最後の時刻
 static clock_t last_clock;
+// 1フレームの秒
 float delta_seconds;
+// 終了リクエスト
+static BOOL exit_request = FALSE;
 
 
 
@@ -39,7 +43,7 @@ static int ProcessMessage(void)
 
 	UpdateInputManager();
 
-	return FALSE;
+	return exit_request;
 }
 
 // 裏画面切り替え
@@ -48,6 +52,12 @@ static int ScreenFlip(void)
 	BufferedConsole_Flush();
 
 	return TRUE;
+}
+
+// 終了リクエスト
+void ExitGame(void)
+{
+	exit_request = TRUE;
 }
 
 //----------------------------------------------------------------------
@@ -76,7 +86,7 @@ int main(void)
 	// ゲームの処理
 	InitializeGame();			// ゲームの初期化処理
 
-	while (!ProcessMessage() && !IsKeyDown(KEY_ESC))
+	while (!ProcessMessage())
 	{
 		UpdateGame();			// ゲームの更新処理
 		RenderGame();			// ゲームの描画処理
